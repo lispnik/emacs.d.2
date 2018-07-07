@@ -12,14 +12,21 @@
 (use-package slime
   :ensure slime
   :init
-  (setq slime-contribs '(slime-fancy slime-quicklisp))
+  (setq slime-contribs '(slime-fancy slime-quicklisp slime-company))
   :config
   (setq slime-lisp-implementations
         `((roswell ("ros" "run"))
           (ecl ("ros" "-L" "ecl" "run"))
           (sbcl ("ros" "-L" "sbcl" "run" "-l" ,(expand-file-name "~/.sbclrc"))))
         slime-auto-start 'always
-        slime-default-lisp 'sbcl))
+        slime-default-lisp 'sbcl)
+  (use-package slime-company
+    :ensure t
+    :config
+    ;; not sure about these:
+    (slime-setup '(slime-company))
+    (define-key slime-mode-map (kbd "TAB") 'company-indent-or-complete-common)
+    (add-hook 'slime-lisp-mode-hook 'company-mode)))
 
 (use-package clojure-mode
   :ensure t)
@@ -40,20 +47,6 @@
   (add-hook 'clojure-mode-hook 'clj-refactor-mode)
   (add-hook 'cider-repl-mode-hook 'clj-refactor-mode)
   (cljr-add-keybindings-with-prefix "C-c m"))
-
-(use-package paredit
-  :after (slime clojure-mode cider)
-  :ensure t
-  :config
-  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
-  (add-hook 'slime-repl-mode-hook
-	    (lambda ()
-	      (define-key slime-repl-mode-map
-                (read-kbd-macro paredit-backward-delete-key) nil)))
-  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-  (add-hook 'cider-repl-mode-hook 'enable-paredit-mode))
 
 (use-package ido
   :ensure t
@@ -89,7 +82,11 @@
 (use-package company
   :ensure t
   :config
-  (setq company-tooltip-align-annotations t))
+  (setq company-tooltip-align-annotations t)
+  (use-package company-quickhelp
+    :ensure t
+    :config
+    (add-hook 'company-mode-hook 'company-quickhelp-mode)))
 
 (use-package rust-mode
   :ensure t
@@ -111,6 +108,33 @@
     (add-hook 'racer-mode-hook 'company-mode))
   (define-key rust-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
+(use-package paredit
+  :ensure t
+  :config
+  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
+  (add-hook 'slime-repl-mode-hook
+	    (lambda ()
+	      (define-key slime-repl-mode-map
+                (read-kbd-macro paredit-backward-delete-key) nil)))
+  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+  (add-hook 'cider-repl-mode-hook 'enable-paredit-mode))
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode))
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+(use-package recentf
+  :config
+  (recentf-mode 1))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -118,7 +142,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package))))
+    (which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
