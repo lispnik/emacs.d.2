@@ -5,3 +5,5 @@ auto-save-list
 eshell
 ido.last
 projectile-bookmarks.eld
+recentf
+ede-projects.el

@@ -23,7 +23,6 @@
   (use-package slime-company
     :ensure t
     :config
-    ;; not sure about these:
     (slime-setup '(slime-company))
     (define-key slime-mode-map (kbd "TAB") 'company-indent-or-complete-common)
     (add-hook 'slime-lisp-mode-hook 'company-mode)))
