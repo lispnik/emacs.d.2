@@ -16,7 +16,7 @@
   :config
   (setq slime-lisp-implementations
         `((roswell ("ros" "run"))
-          (ecl ("ros" "-L" "ecl" "run"))
+          (ecl ("ros" "-L" "ecl" "run" "-l" ,(expand-file-name "~/.eclrc")))
           (sbcl ("ros" "-L" "sbcl" "run" "-l" ,(expand-file-name "~/.sbclrc"))))
         slime-auto-start 'always
         slime-default-lisp 'sbcl)
