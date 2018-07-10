@@ -1,4 +1,5 @@
 (tool-bar-mode -1)
+(require 'cl)
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq package-archives
@@ -16,17 +17,24 @@
   (setq slime-contribs '(slime-fancy slime-quicklisp slime-company))
   :config
   (setq slime-lisp-implementations
-        `((roswell ("ros" "run"))
-          (ecl ("ros" "-L" "ecl" "run" "-l" ,(expand-file-name "~/.eclrc")))
-          (sbcl ("ros" "-L" "sbcl" "run" "-l" ,(expand-file-name "~/.sbclrc"))))
+	(case system-type
+	  (windows-nt
+	   ;; Alllows SDL2 applications to start from SLIME
+	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe")))))
+	  (t `((roswell ("ros" "run"))
+               (ecl ("ros" "-L" "ecl" "run" "-l" ,(expand-file-name "~/.eclrc")))
+               (sbcl ("ros" "-L" "sbcl" "run" "-l" ,(expand-file-name "~/.sbclrc"))))))
         slime-auto-start 'always
-        slime-default-lisp 'sbcl)
+        slime-default-lisp (case system-type
+			     (windows-nt 'ccl)
+			     (t 'sbcl)))
   (use-package slime-company
     :ensure t
     :config
     (slime-setup '(slime-company))
     (define-key slime-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-    (add-hook 'slime-lisp-mode-hook 'company-mode)))
+    (add-hook 'slime-repl-mode-hook 'company-mode)
+    (define-key slime-repl-mode-map (kbd "TAB") 'company-indent-or-complete-common)))
 
 (use-package clojure-mode
   :ensure t)
@@ -135,16 +143,24 @@
   :config
   (recentf-mode 1))
 
+(use-package anzu
+  :ensure t
+  :config
+  (global-anzu-mode 1)
+  (global-set-key [remap query-replace] 'anzu-query-replace)
+  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+   '(anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package))
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Fira Code Retina" :foundry "outline" :slant normal :weight normal :height 100 :width normal)))))
