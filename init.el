@@ -22,8 +22,8 @@
 	   ;; Alllows SDL2 applications to start from SLIME
 	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe")))))
 	  (t `((roswell ("ros" "run"))
-               (ecl ("ros" "-L" "ecl" "run" "-l" ,(expand-file-name "~/.eclrc")))
-               (sbcl ("ros" "-L" "sbcl" "run" "-l" ,(expand-file-name "~/.sbclrc"))))))
+               (ecl ("ros" "-L" "ecl" "run"))
+               (sbcl ("ros" "-L" "sbcl" "run")))))
         slime-auto-start 'always
         slime-default-lisp (case system-type
 			     (windows-nt 'ccl)
