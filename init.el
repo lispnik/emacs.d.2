@@ -150,6 +150,17 @@
   (global-set-key [remap query-replace] 'anzu-query-replace)
   (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
 
+(use-package go-mode
+  :ensure t
+  :config
+  (add-hook 'go-mode-hook 'flycheck-mode)
+  (use-package company-go
+    :ensure t
+    :config
+    (add-hook 'go-mode-hook (lambda ()
+                              (set (make-local-variable 'company-backends) '(company-go))
+                              (company-mode)))))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -157,7 +168,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+    (company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
