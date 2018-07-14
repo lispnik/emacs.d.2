@@ -1,4 +1,11 @@
 (tool-bar-mode -1)
+(setq inhibit-startup-screen t
+      inhibit-startup-echo-area-message (user-login-name)
+      ring-bell-function 'ignore
+      blink-matching-paren nil)
+(when (eq window-system 'ns)
+  (setq ns-command-modifier 'meta
+	ns-alternate-modifier 'super))
 (require 'cl)
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -10,6 +17,33 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+(use-package ediff
+  :config
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+
+(use-package flycheck
+  :ensure t
+  :config
+  (define-key flycheck-mode-map (kbd "M-n") 'flycheck-next-error)
+  (define-key flycheck-mode-map (kbd "M-p") 'flycheck-previous-error))
+
+(use-package dired
+  :config
+  (add-hook 'dired-mode-hook 'hl-line-mode)
+  (use-package dired-x
+    :bind (:map dired-mode-map ("M-o" . dired-omit-mode))
+    :config
+    (add-hook 'dired-mode-hook 'dired-omit-mode)
+    
+    (when (eq system-type 'windows-nt)
+      (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*"))))
+
+(use-package dired-atool
+  :ensure t
+  :bind (:map dired-mode-map
+              ("z" . dired-atool-do-unpack)
+	      ("Z" . dired-atool-do-pack)))
 
 (use-package slime
   :ensure slime
@@ -132,7 +166,9 @@
 (use-package projectile
   :ensure t
   :config
-  (projectile-mode))
+  (projectile-mode)
+  (use-package ripgrep
+    :ensure t))
 
 (use-package which-key
   :ensure t
@@ -140,8 +176,17 @@
   (which-key-mode))
 
 (use-package recentf
+  :bind (("C-x f" . recentf-ido-find-file))
   :config
-  (recentf-mode 1))
+  (use-package recentf-ext
+    :ensure t)
+  (recentf-mode 1)
+  (defun recentf-ido-find-file ()
+    "Find a recent file using Ido."
+    (interactive)
+    (let ((file (ido-completing-read "Recent file: " recentf-list nil t)))
+      (when file
+	(find-file file)))))
 
 (use-package anzu
   :ensure t
@@ -161,14 +206,25 @@
                               (set (make-local-variable 'company-backends) '(company-go))
                               (company-mode)))))
 
+(use-package restclient
+  :ensure t
+  :config
+  (use-package company-restclient
+    :ensure t)
+  (use-package restclient-test
+    :ensure t))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("e8825f26af32403c5ad8bc983f8610a4a4786eb55e3a363fa9acb48e0677fe7e" "5acb6002127f5d212e2d31ba2ab5503df9cd1baa1200fbb5f57cc49f6da3056d" default)))
  '(package-selected-packages
    (quote
-    (company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+    (recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
