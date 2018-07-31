@@ -45,30 +45,34 @@
               ("z" . dired-atool-do-unpack)
 	      ("Z" . dired-atool-do-pack)))
 
-(use-package slime
-  :ensure slime
-  :init
-  (setq slime-contribs '(slime-fancy slime-quicklisp slime-company))
+(use-package sly-autoloads
+  :ensure sly
   :config
-  (setq slime-lisp-implementations
+  (require 'sly)
+  (setq sly-lisp-implementations
 	(case system-type
 	  (windows-nt
 	   ;; Alllows SDL2 applications to start from SLIME
 	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe")))))
 	  (t `((roswell ("ros" "run"))
-               (ecl ("ros" "-L" "ecl" "run"))
-               (sbcl ("ros" "-L" "sbcl" "run")))))
-        slime-auto-start 'always
-        slime-default-lisp (case system-type
-			     (windows-nt 'ccl)
-			     (t 'sbcl)))
-  (use-package slime-company
-    :ensure t
-    :config
-    (slime-setup '(slime-company))
-    (define-key slime-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-    (add-hook 'slime-repl-mode-hook 'company-mode)
-    (define-key slime-repl-mode-map (kbd "TAB") 'company-indent-or-complete-common)))
+	       (ecl ("ros" "-L" "ecl" "run"))
+	       (sbcl ("ros" "-L" "sbcl" "run")))))
+        sly-auto-start 'always
+        sly-default-lisp (case system-type
+			   (windows-nt 'ccl)
+			   (t 'sbcl)))
+  (add-hook 'sly-mode-hook 'company-mode)
+  (add-hook 'sly-mrepl-mode-hook 'company-mode)
+  (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common)
+;;  (define-key sly-mrepl-mode-map (kbd "TAB") 'company-indent-or-complete-common)
+  ;; (use-package slime-company
+  ;;   :ensure t
+  ;;   :config
+  ;;   (slime-setup '(slime-company))
+  ;;   (define-key sly-slime-mode-map (kbd "TAB") 'company-indent-or-complete-common)
+  ;;   (add-hook 'sly-mrepl-mode-hook 'company-mode)
+  ;;   (define-key slime-repl-mode-map (kbd "TAB") 'company-indent-or-complete-common))
+  )
 
 (use-package clojure-mode
   :ensure t)
@@ -151,14 +155,15 @@
   (define-key rust-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package paredit
+  :after (sly)
   :ensure t
   :config
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
-  (add-hook 'slime-repl-mode-hook
+  (add-hook 'sly-mrepl-mode-hook 'enable-paredit-mode)
+  (add-hook 'sly-repl-mode-hook
 	    (lambda ()
-	      (define-key slime-repl-mode-map
+	      (define-key sly-mrepl-mode-map
                 (read-kbd-macro paredit-backward-delete-key) nil)))
   (add-hook 'clojure-mode-hook 'enable-paredit-mode)
   (add-hook 'cider-repl-mode-hook 'enable-paredit-mode))
