@@ -18,6 +18,10 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; (use-package zenburn-theme :ensure t)
+;; (use-package leuven-theme :ensure t)
+(use-package minimal-theme :ensure t :config (load-theme 'minimal-light))
+
 (use-package ediff
   :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
@@ -219,6 +223,39 @@
   (use-package restclient-test
     :ensure t))
 
+(use-package org
+  :ensure org-plus-contrib
+  :config
+  (defun my-turn-on-org-present ()
+    (org-present-big)
+    (org-display-inline-images))
+  (defun my-turn-off-org-present ()
+    (org-present-small)
+    (org-remove-inline-images))
+  (use-package org-present
+    :ensure t
+    :config
+    (add-hook 'org-present-mode-hook 'my-turn-off-org-present)
+    (add-hook 'org-present-mode-quit-hook 'my-turn-off-org-present))
+  (use-package ob-tangle)
+  (use-package ob-clojure
+    :config
+    (setq org-babel-clojure-backend 'cider))
+  (use-package ob-rust
+    :ensure t)
+  (use-package ob-J)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((lisp . t)
+     (emacs-lisp . t)
+     (clojure . t)
+     (java . t)
+     (J . t)
+     (rust . t)))
+  (use-package epresent :ensure t)
+  (add-hook 'org-mode-hook 'visual-line-mode))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -226,10 +263,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("e8825f26af32403c5ad8bc983f8610a4a4786eb55e3a363fa9acb48e0677fe7e" "5acb6002127f5d212e2d31ba2ab5503df9cd1baa1200fbb5f57cc49f6da3056d" default)))
+    ("3e335d794ed3030fefd0dbd7ff2d3555e29481fe4bbb0106ea11c660d6001767" "cc0dbb53a10215b696d391a90de635ba1699072745bf653b53774706999208e3" "e8825f26af32403c5ad8bc983f8610a4a4786eb55e3a363fa9acb48e0677fe7e" "5acb6002127f5d212e2d31ba2ab5503df9cd1baa1200fbb5f57cc49f6da3056d" default)))
  '(package-selected-packages
    (quote
-    (recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+    (minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
