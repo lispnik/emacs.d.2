@@ -20,7 +20,7 @@
 
 ;; (use-package zenburn-theme :ensure t)
 ;; (use-package leuven-theme :ensure t)
-(use-package minimal-theme :ensure t :config (load-theme 'minimal-light))
+;; (use-package minimal-theme :ensure t :config (load-theme 'minimal-light))
 
 (use-package ediff
   :config
@@ -141,6 +141,8 @@
 (use-package rust-mode
   :ensure t
   :config
+  (add-hook 'rust-mode-hook 'show-paren-mode)
+  (add-hook 'rust-mode-hook 'electric-pair-mode)
   (use-package flycheck-rust
     :ensure t
     :config
@@ -273,4 +275,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Fira Code Retina" :foundry "outline" :slant normal :weight normal :height 100 :width normal)))))
+ '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal)))))
