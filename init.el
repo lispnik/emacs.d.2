@@ -3,9 +3,12 @@
       inhibit-startup-echo-area-message (user-login-name)
       ring-bell-function 'ignore
       blink-matching-paren nil)
-(when (eq window-system 'ns)
+(cond
+ ((eq window-system 'ns)
   (setq ns-command-modifier 'meta
 	ns-alternate-modifier 'super))
+  ((eq window-system nil)
+   (menu-bar-mode -1)))
 (require 'cl)
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -68,6 +71,8 @@
   (add-hook 'sly-mode-hook 'company-mode)
   (add-hook 'sly-mrepl-mode-hook 'company-mode)
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common)
+  (add-hook 'sly-mode-hook 'show-paren-mode)
+  (add-hook 'sly-mrepl-mode-hook 'show-paren-mode)
 ;;  (define-key sly-mrepl-mode-map (kbd "TAB") 'company-indent-or-complete-common)
   ;; (use-package slime-company
   ;;   :ensure t
@@ -275,4 +280,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal)))))
+ '(default ((t (:family "Ubuntu Mono" :foundry "DAMA" :slant normal :weight normal :height 120 :width normal)))))
