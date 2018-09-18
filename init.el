@@ -18,9 +18,15 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; (use-package zenburn-theme :ensure t)
-;; (use-package leuven-theme :ensure t)
-;; (use-package minimal-theme :ensure t :config (load-theme 'minimal-light))
+(defun funcalls (&rest funcs)
+  "Returns a function that calls a list of zero-argument functions in FUNCS"
+  (lexical-let ((funcs funcs))
+    (lambda ()
+      (dolist (f funcs)
+	(funcall f)))))
+
+(use-package dockerfile-mode :ensure t)
+(use-package auto-highlight-symbol :ensure t)
 
 (use-package ediff
   :config
@@ -39,15 +45,13 @@
     :bind (:map dired-mode-map ("M-o" . dired-omit-mode))
     :config
     (add-hook 'dired-mode-hook 'dired-omit-mode)
-    
     (when (eq system-type 'windows-nt)
-      (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*"))))
-
-(use-package dired-atool
-  :ensure t
-  :bind (:map dired-mode-map
-              ("z" . dired-atool-do-unpack)
-	      ("Z" . dired-atool-do-pack)))
+      (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*")))
+  (use-package dired-atool
+    :ensure t
+    :bind (:map dired-mode-map
+		("z" . dired-atool-do-unpack)
+		("Z" . dired-atool-do-pack))))
 
 (use-package sly-autoloads
   :ensure sly
@@ -55,9 +59,8 @@
   (require 'sly)
   (setq sly-lisp-implementations
 	(case system-type
-	  (windows-nt
-	   ;; Alllows SDL2 applications to start from SLIME
-	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe")))))
+	  (windows-nt   
+	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe"))))) ;Allows SDL2 applications to start from SLIME
 	  (t `((roswell ("ros" "run"))
 	       (ecl ("ros" "-L" "ecl" "run"))
 	       (sbcl ("ros" "-L" "sbcl" "run")))))
@@ -65,21 +68,11 @@
         sly-default-lisp (case system-type
 			   (windows-nt 'ccl)
 			   (t 'sbcl)))
-  (add-hook 'sly-mode-hook 'company-mode)
-  (add-hook 'sly-mrepl-mode-hook 'company-mode)
-  (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-;;  (define-key sly-mrepl-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-  ;; (use-package slime-company
-  ;;   :ensure t
-  ;;   :config
-  ;;   (slime-setup '(slime-company))
-  ;;   (define-key sly-slime-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-  ;;   (add-hook 'sly-mrepl-mode-hook 'company-mode)
-  ;;   (define-key slime-repl-mode-map (kbd "TAB") 'company-indent-or-complete-common))
-  )
+  (add-hook 'sly-mode-hook (funcalls 'company-mode 'auto-highlight-symbol-mode 'show-paren-mode))
+  (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'auto-highlight-symbol-mode 'show-paren-mode))
+  (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
-(use-package clojure-mode
-  :ensure t)
+(use-package clojure-mode :ensure t)
 
 (use-package cider
   :after (clojure-mode)
@@ -141,8 +134,7 @@
 (use-package rust-mode
   :ensure t
   :config
-  (add-hook 'rust-mode-hook 'show-paren-mode)
-  (add-hook 'rust-mode-hook 'electric-pair-mode)
+  (add-hook 'rust-mode-hook (funcalls 'show-paren-mode 'electric-pair-mode))
   (use-package flycheck-rust
     :ensure t
     :config
@@ -177,20 +169,18 @@
 (use-package projectile
   :ensure t
   :config
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode)
-  (use-package ripgrep
-    :ensure t))
+  (use-package ripgrep :ensure t))
 
 (use-package which-key
   :ensure t
-  :config
-  (which-key-mode))
+  :config (which-key-mode))
 
 (use-package recentf
   :bind (("C-x f" . recentf-ido-find-file))
   :config
-  (use-package recentf-ext
-    :ensure t)
+  (use-package recentf-ext :ensure t)
   (recentf-mode 1)
   (defun recentf-ido-find-file ()
     "Find a recent file using Ido."
@@ -206,24 +196,11 @@
   (global-set-key [remap query-replace] 'anzu-query-replace)
   (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
 
-(use-package go-mode
-  :ensure t
-  :config
-  (add-hook 'go-mode-hook 'flycheck-mode)
-  (use-package company-go
-    :ensure t
-    :config
-    (add-hook 'go-mode-hook (lambda ()
-                              (set (make-local-variable 'company-backends) '(company-go))
-                              (company-mode)))))
-
 (use-package restclient
   :ensure t
   :config
-  (use-package company-restclient
-    :ensure t)
-  (use-package restclient-test
-    :ensure t))
+  (use-package company-restclient :ensure t)
+  (use-package restclient-test :ensure t))
 
 (use-package org
   :ensure org-plus-contrib
@@ -257,7 +234,6 @@
   (use-package epresent :ensure t)
   (add-hook 'org-mode-hook 'visual-line-mode))
 
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -265,10 +241,11 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("3e335d794ed3030fefd0dbd7ff2d3555e29481fe4bbb0106ea11c660d6001767" "cc0dbb53a10215b696d391a90de635ba1699072745bf653b53774706999208e3" "e8825f26af32403c5ad8bc983f8610a4a4786eb55e3a363fa9acb48e0677fe7e" "5acb6002127f5d212e2d31ba2ab5503df9cd1baa1200fbb5f57cc49f6da3056d" default)))
+    ("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
  '(package-selected-packages
    (quote
-    (minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+    (dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+ '(safe-local-variable-values (quote ((Package . CCL))))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -276,3 +253,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal)))))
+
+;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
+(use-package doom-themes :ensure t :config (load-theme 'doom-one))
