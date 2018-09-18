@@ -71,26 +71,9 @@
         sly-default-lisp (case system-type
 			   (windows-nt 'ccl)
 			   (t 'sbcl)))
-<<<<<<< HEAD
   (add-hook 'sly-mode-hook (funcalls 'company-mode 'auto-highlight-symbol-mode 'show-paren-mode))
   (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'auto-highlight-symbol-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
-=======
-  (add-hook 'sly-mode-hook 'company-mode)
-  (add-hook 'sly-mrepl-mode-hook 'company-mode)
-  (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-  (add-hook 'sly-mode-hook 'show-paren-mode)
-  (add-hook 'sly-mrepl-mode-hook 'show-paren-mode)
-;;  (define-key sly-mrepl-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-  ;; (use-package slime-company
-  ;;   :ensure t
-  ;;   :config
-  ;;   (slime-setup '(slime-company))
-  ;;   (define-key sly-slime-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-  ;;   (add-hook 'sly-mrepl-mode-hook 'company-mode)
-  ;;   (define-key slime-repl-mode-map (kbd "TAB") 'company-indent-or-complete-common))
-  )
->>>>>>> 93f546fe8dd43b8c1f0eef2e29df5de7bdb8c31b
 
 (use-package clojure-mode :ensure t)
 
