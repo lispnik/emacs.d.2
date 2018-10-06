@@ -29,6 +29,9 @@
 	(funcall f)))))
 
 (use-package dockerfile-mode :ensure t)
+(use-package ggtags
+  :ensure t
+  :config (add-hook 'c-mode-hook 'ggtags-mode))
 
 (use-package ediff
   :config
@@ -246,7 +249,7 @@
     ("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
  '(package-selected-packages
    (quote
-    (dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+    (ggtags ggtag-mode ggtags-mode dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
  '(safe-local-variable-values (quote ((Package . CCL))))
  '(tool-bar-mode nil))
 (custom-set-faces
