@@ -29,7 +29,6 @@
 	(funcall f)))))
 
 (use-package dockerfile-mode :ensure t)
-(use-package auto-highlight-symbol :ensure t)
 
 (use-package ediff
   :config
