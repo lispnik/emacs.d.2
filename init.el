@@ -73,8 +73,8 @@
         sly-default-lisp (case system-type
 			   (windows-nt 'ccl)
 			   (t 'sbcl)))
-  (add-hook 'sly-mode-hook (funcalls 'company-mode 'auto-highlight-symbol-mode 'show-paren-mode))
-  (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'auto-highlight-symbol-mode 'show-paren-mode))
+  (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
+  (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package clojure-mode :ensure t)
@@ -246,10 +246,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
+    ("b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
  '(package-selected-packages
    (quote
-    (ggtags ggtag-mode ggtags-mode dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+    (ggtags ggtag-mode ggtags-mode dockerfile-mode doom-theme doom-themes minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
  '(safe-local-variable-values (quote ((Package . CCL))))
  '(tool-bar-mode nil))
 (custom-set-faces
