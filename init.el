@@ -244,10 +244,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
+    ("b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
  '(package-selected-packages
    (quote
-    (dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+    (ggtags dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
  '(safe-local-variable-values (quote ((Package . CCL))))
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -255,7 +255,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal)))))
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 106 :width normal)))))
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 (use-package doom-themes :ensure t :config (load-theme 'doom-one))
