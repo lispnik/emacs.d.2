@@ -46,6 +46,7 @@
 (use-package dired
   :config
   (add-hook 'dired-mode-hook 'hl-line-mode)
+  (add-hook 'dired-mode-hook 'dired-omit-mode)
   (use-package dired-x
     :bind (:map dired-mode-map ("M-o" . dired-omit-mode))
     :config
@@ -72,7 +73,7 @@
         sly-auto-start 'always
         sly-default-lisp (case system-type
 			   (windows-nt 'ccl)
-			   (t 'sbcl)))
+			   (t 'roswell)))
   (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
