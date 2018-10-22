@@ -31,7 +31,6 @@
 
 (use-package fic-mode :ensure t :config (add-hook 'prog-mode-hook 'fic-mode))
 (use-package dockerfile-mode :ensure t)
-
 (use-package ggtags
   :ensure t
   :config
@@ -51,6 +50,7 @@
 (use-package dired
   :config
   (add-hook 'dired-mode-hook 'hl-line-mode)
+  (add-hook 'dired-mode-hook 'dired-omit-mode)
   (use-package dired-x
     :bind (:map dired-mode-map ("M-o" . dired-omit-mode))
     :config
@@ -78,9 +78,9 @@
         sly-auto-start 'always
         sly-default-lisp (case system-type
 			   (windows-nt 'ccl)
-			   (t 'sbcl)))
+			   (t 'roswell)))
   (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
-  (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode  'show-paren-mode))
+  (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package clojure-mode :ensure t)
@@ -255,9 +255,9 @@
     ("b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
  '(package-selected-packages
    (quote
-    (delight fic-mode aggressive-indent ggtags dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
- '(safe-local-variable-values (quote ((Package . CCL)))))
-
+    (ggtags ggtag-mode ggtags-mode dockerfile-mode doom-theme doom-themes minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+ '(safe-local-variable-values (quote ((Package . CCL))))
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -265,7 +265,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal))))
  '(fic-author-face ((t (:foreground "orangered" :underline t))))
- '(fic-face ((t (:foreground "red" :weight bold)))))
+ '(fic-face ((t (:foreground "red" :weight bold))))))
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 (use-package doom-themes :ensure t :config (load-theme 'doom-one))
