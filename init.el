@@ -265,7 +265,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal))))
  '(fic-author-face ((t (:foreground "orangered" :underline t))))
- '(fic-face ((t (:foreground "red" :weight bold))))))
+ '(fic-face ((t (:foreground "red" :weight bold)))))
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 (use-package doom-themes :ensure t :config (load-theme 'doom-one))
