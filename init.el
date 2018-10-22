@@ -19,6 +19,7 @@
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
+  (package-install 'delight)
   (package-install 'use-package))
 
 (defun funcalls (&rest funcs)
@@ -28,8 +29,14 @@
       (dolist (f funcs)
 	(funcall f)))))
 
-(use-package fic-mode :ensure t)
+(use-package fic-mode :ensure t :config (add-hook 'prog-mode-hook 'fic-mode))
 (use-package dockerfile-mode :ensure t)
+
+(use-package ggtags
+  :ensure t
+  :config
+  (add-hook 'c-mode-hook 'ggtags-mode)
+  (add-hook 'c++-mode-hook 'ggtags-mode))
 
 (use-package ediff
   :config
@@ -47,7 +54,7 @@
   (use-package dired-x
     :bind (:map dired-mode-map ("M-o" . dired-omit-mode))
     :config
-    (add-hook 'dired-mode-hook 'dired-omit-mode)
+    (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
     (when (eq system-type 'windows-nt)
       (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*")))
   (use-package dired-atool
@@ -60,7 +67,8 @@
   :ensure sly
   :config
   (require 'sly)
-  (setq sly-lisp-implementations
+  (setq sly-ignore-protocol-mismatches t
+	sly-lisp-implementations
 	(case system-type
 	  (windows-nt   
 	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe"))))) ;Allows SDL2 applications to start from SLIME
@@ -245,18 +253,19 @@
  '(custom-safe-themes
    (quote
     ("b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
- '(line-number-mode nil)
  '(package-selected-packages
    (quote
-    (fic-mode aggressive-indent ggtags dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
- '(safe-local-variable-values (quote ((Package . CCL))))
- '(tool-bar-mode nil))
+    (delight fic-mode aggressive-indent ggtags dockerfile-mode doom-theme doom-themes auto-highlight-symbol minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
+ '(safe-local-variable-values (quote ((Package . CCL)))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal)))))
+ '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal))))
+ '(fic-author-face ((t (:foreground "orangered" :underline t))))
+ '(fic-face ((t (:foreground "red" :weight bold)))))
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 (use-package doom-themes :ensure t :config (load-theme 'doom-one))
