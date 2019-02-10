@@ -250,6 +250,10 @@
 
 (use-package lua-mode :ensure t)
 
+(use-package desktop
+  :config
+  (desktop-save-mode 1))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
