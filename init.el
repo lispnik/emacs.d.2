@@ -7,8 +7,8 @@
  ((eq window-system 'ns)
   (setq ns-command-modifier 'meta
 	ns-alternate-modifier 'super))
-  ((eq window-system nil)
-   (menu-bar-mode -1)))
+ ((eq window-system nil)
+  (menu-bar-mode -1)))
 (require 'cl)
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -29,21 +29,11 @@
       (dolist (f funcs)
 	(funcall f)))))
 
-(use-package fic-mode :ensure t :config (add-hook 'prog-mode-hook 'fic-mode))
-(use-package dockerfile-mode :ensure t)
-(use-package ggtags
-  :ensure t
-  :config
-  (add-hook 'c-mode-hook 'ggtags-mode)
-  (add-hook 'c++-mode-hook 'ggtags-mode))
-
-(use-package ag
-  :ensure t)
-
 (use-package ediff
-  :config
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-
+  :config (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+(use-package fic-mode
+  :ensure t
+  :config (add-hook 'prog-mode-hook fic-mode))
 (use-package flycheck
   :ensure t
   :config
@@ -60,16 +50,25 @@
     (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
     (when (eq system-type 'windows-nt)
       (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*")))
-  (use-package dired-atool
-    :ensure t
-    :bind (:map dired-mode-map
-		("z" . dired-atool-do-unpack)
-		("Z" . dired-atool-do-pack))))
+  (when (member system-type '(gnu/linux darwin))
+    (use-package dired-atool
+      :ensure t
+      :bind (:map dired-mode-map
+		  ("z" . dired-atool-do-unpack)
+		  ("Z" . dired-atool-do-pack)))))
 
-(use-package sly-autoloads
-  :ensure sly
+(use-package dockerfile-mode :ensure t)
+(use-package ag :ensure t)
+
+(use-package ggtags
+  :ensure t
   :config
-  (require 'sly)
+  (add-hook 'c-mode-hook 'ggtags-mode)
+  (add-hook 'c++-mode-hook 'ggtags-mode))
+
+(use-package sly
+  :ensure t
+  :config
   (setq sly-ignore-protocol-mismatches t
 	sly-lisp-implementations
 	(case system-type
@@ -86,24 +85,22 @@
   (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
-(use-package clojure-mode :ensure t)
-
-(use-package cider
-  :after (clojure-mode)
-  :ensure t
-  :bind (("C-c M-j" . cider-jack-in)
-         ("C-c M-J" . cider-jack-in-clojurescript)
-	 ("C-c M-c" . cider-connect))
-  :config
-  (setq cider-default-repl-command "lein"))
-
-(use-package clj-refactor
-  :after (clojure-mode cider)
-  :ensure t
-  :config
-  (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-  (add-hook 'cider-repl-mode-hook 'clj-refactor-mode)
-  (cljr-add-keybindings-with-prefix "C-c m"))
+;; (use-package clojure-mode :ensure t)
+;; (use-package cider
+;;   :after (clojure-mode)
+;;   :ensure t
+;;   :bind (("C-c M-j" . cider-jack-in)
+;;          ("C-c M-J" . cider-jack-in-clojurescript)
+;; 	 ("C-c M-c" . cider-connect))
+;;   :config
+;;   (setq cider-default-repl-command "lein"))
+;; (use-package clj-refactor
+;;   :after (clojure-mode cider)
+;;   :ensure t
+;;   :config
+;;   (add-hook 'clojure-mode-hook 'clj-refactor-mode)
+;;   (add-hook 'cider-repl-mode-hook 'clj-refactor-mode)
+;;   (cljr-add-keybindings-with-prefix "C-c m"))
 
 (use-package ido
   :ensure t
@@ -142,32 +139,30 @@
   (setq company-tooltip-align-annotations t)
   (use-package company-quickhelp
     :ensure t
-    :config
-    (add-hook 'company-mode-hook 'company-quickhelp-mode)))
+    :hook (add-hook 'company-mode-hook 'company-quickhelp-mode)))
 
-(use-package rust-mode
-  :ensure t
-  :config
-  (add-hook 'rust-mode-hook (funcalls 'show-paren-mode 'electric-pair-mode))
-  (use-package flycheck-rust
-    :ensure t
-    :config
-    (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
-    (add-hook 'rust-mode-hook 'flycheck-mode))
-  (use-package cargo
-    :ensure t
-    :config
-    (add-hook 'rust-mode-hook 'cargo-minor-mode))
-  (use-package racer
-    :ensure t
-    :config
-    (add-hook 'rust-mode-hook 'racer-mode)
-    (add-hook 'racer-mode-hook 'eldoc-mode)
-    (add-hook 'racer-mode-hook 'company-mode))
-  (define-key rust-mode-map (kbd "TAB") 'company-indent-or-complete-common))
+;; (use-package rust-mode
+;;   :ensure t
+;;   :config
+;;   (add-hook 'rust-mode-hook (funcalls 'show-paren-mode 'electric-pair-mode))
+;;   (use-package flycheck-rust
+;;     :ensure t
+;;     :config
+;;     (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
+;;     (add-hook 'rust-mode-hook 'flycheck-mode))
+;;   (use-package cargo
+;;     :ensure t
+;;     :config
+;;     (add-hook 'rust-mode-hook 'cargo-minor-mode))
+;;   (use-package racer
+;;     :ensure t
+;;     :config
+;;     (add-hook 'rust-mode-hook 'racer-mode)
+;;     (add-hook 'racer-mode-hook 'eldoc-mode)
+;;     (add-hook 'racer-mode-hook 'company-mode))
+;;   (define-key rust-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package paredit
-  :after (sly)
   :ensure t
   :config
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
@@ -176,9 +171,10 @@
   (add-hook 'sly-repl-mode-hook
 	    (lambda ()
 	      (define-key sly-mrepl-mode-map
-                (read-kbd-macro paredit-backward-delete-key) nil)))
-  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-  (add-hook 'cider-repl-mode-hook 'enable-paredit-mode))
+		(read-kbd-macro paredit-backward-delete-key) nil)))
+  ;; (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+  ;; (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
+  )
 
 (use-package projectile
   :ensure t
@@ -210,11 +206,11 @@
   (global-set-key [remap query-replace] 'anzu-query-replace)
   (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
 
-(use-package restclient
-  :ensure t
-  :config
-  (use-package company-restclient :ensure t)
-  (use-package restclient-test :ensure t))
+;; (use-package restclient
+;;   :ensure t
+;;   :config
+;;   (use-package company-restclient :ensure t)
+;;   (use-package restclient-test :ensure t))
 
 (use-package org
   :ensure org-plus-contrib
@@ -248,34 +244,17 @@
   (use-package epresent :ensure t)
   (add-hook 'org-mode-hook 'visual-line-mode))
 
-(use-package lua-mode :ensure t)
-
-(use-package desktop
-  :config
-  (desktop-save-mode 1))
+(setq org-babel-lisp-eval-fn 'sly-eval)
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
- '(package-selected-packages
-   (quote
-    (lua-mode ggtags ggtag-mode ggtags-mode dockerfile-mode doom-theme doom-themes minimal-theme-light minimal-theme leuven-theme epresent org-present org-plus-contrib ob-rust zenburn-theme bozidar-theme bozadir-theme recentf-ext restclient-test company-restclient restclient projectile-ripgrep dired-atool farmhouse-theme espresso-theme company-go go-mode anzu which-key projectile company-quickhelp slime-company flycheck-rust racer company cargo rust-mode ido-vertical-mode magit smex ido-completing-read+ flx-ido cider paredit use-package)))
- '(safe-local-variable-values (quote ((Package . CCL))))
+ '(safe-local-variable-values '((Package . CCL)))
  '(tool-bar-mode nil))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 99 :width normal))))
+ '(default ((t (:family "Fira Code" :foundry "CTDB" :slant normal :weight normal :height 98 :width normal))))
  '(fic-author-face ((t (:foreground "orangered" :underline t))))
  '(fic-face ((t (:foreground "red" :weight bold)))))
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
-(use-package doom-themes :ensure t :config (load-theme 'doom-one))
+;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
 (put 'downcase-region 'disabled nil)
+
