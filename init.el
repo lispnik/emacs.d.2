@@ -33,7 +33,7 @@
   :config (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 (use-package fic-mode
   :ensure t
-  :config (add-hook 'prog-mode-hook fic-mode))
+  :config (add-hook 'prog-mode-hook 'fic-mode))
 (use-package flycheck
   :ensure t
   :config
@@ -247,9 +247,19 @@
 (setq org-babel-lisp-eval-fn 'sly-eval)
 
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight))
  '(safe-local-variable-values '((Package . CCL)))
  '(tool-bar-mode nil))
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:family "Fira Code" :foundry "CTDB" :slant normal :weight normal :height 98 :width normal))))
  '(fic-author-face ((t (:foreground "orangered" :underline t))))
  '(fic-face ((t (:foreground "red" :weight bold)))))
