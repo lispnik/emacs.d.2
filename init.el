@@ -73,7 +73,8 @@
 	sly-lisp-implementations
 	(case system-type
 	  (windows-nt   
-	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe"))))) ;Allows SDL2 applications to start from SLIME
+	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe"))) ;Allows SDL2 applications to start from SLIME
+	     (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))) 
 	  (t `((roswell ("ros" "run"))
 	       (ecl ("ros" "-L" "ecl" "run"))
 	       (sbcl ("ros" "-L" "sbcl" "run")))))
@@ -240,11 +241,16 @@
      (clojure . t)
      (java . t)
      (J . t)
-     (rust . t)))
+     (rust . t)
+     (plantuml . t)))
   (use-package epresent :ensure t)
   (add-hook 'org-mode-hook 'visual-line-mode))
 
+(setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
 (setq org-babel-lisp-eval-fn 'sly-eval)
+
+(use-package plantuml-mode :ensure t :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
+(use-package flycheck-plantuml :ensure t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -252,15 +258,17 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight))
- '(safe-local-variable-values '((Package . CCL)))
+   (quote
+    (flycheck-plantuml epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight)))
+ '(safe-local-variable-values (quote ((Package . CCL))))
+ '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Fira Code" :foundry "CTDB" :slant normal :weight normal :height 98 :width normal))))
+ '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 98 :width normal))))
  '(fic-author-face ((t (:foreground "orangered" :underline t))))
  '(fic-face ((t (:foreground "red" :weight bold)))))
 
