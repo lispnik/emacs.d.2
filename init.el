@@ -2,7 +2,8 @@
 (setq inhibit-startup-screen t
       inhibit-startup-echo-area-message (user-login-name)
       ring-bell-function 'ignore
-      blink-matching-paren nil)
+      blink-matching-paren nil
+      default-directory "~/")
 (cond
  ((eq window-system 'ns)
   (setq ns-command-modifier 'meta
@@ -251,12 +252,18 @@
 
 (use-package plantuml-mode :ensure t :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 (use-package flycheck-plantuml :ensure t)
+(use-package highlight-symbol :ensure t)
+
+(add-hook 'lisp-mode-hook 'highlight-symbol-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" default)))
  '(package-selected-packages
    (quote
     (flycheck-plantuml epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight)))
