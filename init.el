@@ -78,11 +78,13 @@
              (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))) 
           (t `((roswell ("ros" "run"))
                (ecl ("ros" "-L" "ecl" "run"))
-               (sbcl ("ros" "-L" "sbcl" "run" "--" "--dynamic-size" "2048")))))
+;;               (sbcl ("ros" "-L" "sbcl" "run" "--" "--dynamic-space-size" "2048"))
+               (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+	       )))
         sly-auto-start 'always
         sly-default-lisp (case system-type
                            (windows-nt 'ccl)
-                           (t 'roswell)))
+                           (t 'sbcl)))
   (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
@@ -262,10 +264,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("49ec957b508c7d64708b40b0273697a84d3fee4f15dd9fc4a9588016adee3dad" "b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" default))
+   (quote
+    ("49ec957b508c7d64708b40b0273697a84d3fee4f15dd9fc4a9588016adee3dad" "b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" default)))
  '(package-selected-packages
-   '(doom-themes flycheck-plantuml epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight))
- '(safe-local-variable-values '((Package . CCL)))
+   (quote
+    (doom-themes flycheck-plantuml epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight)))
+ '(safe-local-variable-values (quote ((Package . CCL))))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
