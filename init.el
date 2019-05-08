@@ -4,6 +4,12 @@
       ring-bell-function 'ignore
       blink-matching-paren nil
       default-directory "~/")
+
+;; (setq mac-option-key-is-meta nil)
+;; (setq mac-command-key-is-meta t)
+;; (setq mac-command-modifier 'meta)
+;; (setq mac-option-modifier nil)
+ 
 (cond
  ((eq window-system 'ns)
   (setq ns-command-modifier 'meta
