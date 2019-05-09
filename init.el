@@ -80,7 +80,7 @@
         sly-lisp-implementations
         (case system-type
           (windows-nt   
-           `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe"))) ;Allows SDL2 applications to start from SLIME
+           `((ccl ("cmd" "/c" ,(expand-file-name "~/CCL/wx86cl64.exe"))) ;Allows SDL2 applications to start from SLIME
              (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))) 
           (t `((roswell ("ros" "run"))
                (ecl ("ros" "-L" "ecl" "run"))
@@ -261,7 +261,7 @@
 (use-package plantuml-mode :ensure t :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 (use-package flycheck-plantuml :ensure t)
 (use-package highlight-symbol :ensure t)
-
+(use-package editorconfig :ensure t :config (editorconfig-mode))
 (add-hook 'lisp-mode-hook 'highlight-symbol-mode)
 
 (custom-set-variables
@@ -274,7 +274,7 @@
     ("49ec957b508c7d64708b40b0273697a84d3fee4f15dd9fc4a9588016adee3dad" "b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" default)))
  '(package-selected-packages
    (quote
-    (doom-themes flycheck-plantuml epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight)))
+    (editorconfig editor-config doom-themes flycheck-plantuml epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight)))
  '(safe-local-variable-values (quote ((Package . CCL))))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
@@ -283,7 +283,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Fira Code" :foundry "CTDB" :slant normal :weight normal :height 98 :width normal))))
+ '(default ((t (:family "Fira Code Retina" :foundry "outline" :slant normal :weight normal :height 90 :width normal))))
  '(fic-author-face ((t (:foreground "orangered" :underline t))))
  '(fic-face ((t (:foreground "red" :weight bold)))))
 
