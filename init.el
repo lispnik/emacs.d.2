@@ -8,15 +8,19 @@
  ((eq window-system 'ns)
   (setq ns-command-modifier 'meta
 	ns-alternate-modifier 'super))
- ((eq window-system nil)
-  (menu-bar-mode -1)))
+
+;; (setq mac-option-key-is-meta nil)
+;; (setq mac-command-key-is-meta t)
+;; (setq mac-command-modifier 'meta)
+;; (setq mac-option-modifier nil)
+ 
 (require 'cl)
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
         ("gnu" . "https://elpa.gnu.org/packages/")
-	("org" . "https://orgmode.org/elpa/")))
+        ("org" . "https://orgmode.org/elpa/")))
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -28,7 +32,7 @@
   (lexical-let ((funcs funcs))
     (lambda ()
       (dolist (f funcs)
-	(funcall f)))))
+        (funcall f)))))
 
 (use-package ediff
   :config (setq ediff-window-setup-function 'ediff-setup-windows-plain))
@@ -55,8 +59,8 @@
     (use-package dired-atool
       :ensure t
       :bind (:map dired-mode-map
-		  ("z" . dired-atool-do-unpack)
-		  ("Z" . dired-atool-do-pack)))))
+                  ("z" . dired-atool-do-unpack)
+                  ("Z" . dired-atool-do-pack)))))
 
 (use-package dockerfile-mode :ensure t)
 (use-package ag :ensure t)
@@ -71,18 +75,20 @@
   :ensure t
   :config
   (setq sly-ignore-protocol-mismatches t
-	sly-lisp-implementations
-	(case system-type
-	  (windows-nt   
-	   `((ccl ("cmd" "/c" ,(expand-file-name "~/Clozure CL/wx86cl64.exe"))) ;Allows SDL2 applications to start from SLIME
-	     (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))) 
-	  (t `((roswell ("ros" "run"))
-	       (ecl ("ros" "-L" "ecl" "run"))
-	       (sbcl ("ros" "-L" "sbcl" "run")))))
+        sly-lisp-implementations
+        (case system-type
+          (windows-nt   
+           `((ccl ("cmd" "/c" ,(expand-file-name "~/CCL/wx86cl64.exe"))) ;Allows SDL2 applications to start from SLIME
+             (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))) 
+          (t `((roswell ("ros" "run"))
+               (ecl ("ros" "-L" "ecl" "run"))
+;;               (sbcl ("ros" "-L" "sbcl" "run" "--" "--dynamic-space-size" "2048"))
+               (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+	       )))
         sly-auto-start 'always
         sly-default-lisp (case system-type
-			   (windows-nt 'ccl)
-			   (t 'roswell)))
+                           (windows-nt 'ccl)
+                           (t 'sbcl)))
   (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
@@ -93,7 +99,7 @@
 ;;   :ensure t
 ;;   :bind (("C-c M-j" . cider-jack-in)
 ;;          ("C-c M-J" . cider-jack-in-clojurescript)
-;; 	 ("C-c M-c" . cider-connect))
+;;       ("C-c M-c" . cider-connect))
 ;;   :config
 ;;   (setq cider-default-repl-command "lein"))
 ;; (use-package clj-refactor
@@ -118,13 +124,13 @@
     :config
     (flx-ido-mode 1)
     (setq ido-enable-flex-matching t
-	  id-use-faces nil)))
+          id-use-faces nil)))
 
 (use-package smex
   :ensure t
   :bind (("M-x" . smex)
-	 ("M-X" . smex-major-mode-commands)
-	 ("C-c C-c M-x" . execute-extended-command))
+         ("M-X" . smex-major-mode-commands)
+         ("C-c C-c M-x" . execute-extended-command))
   :config
   (smex-initialize))
 
@@ -171,9 +177,9 @@
   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'sly-mrepl-mode-hook 'enable-paredit-mode)
   (add-hook 'sly-repl-mode-hook
-	    (lambda ()
-	      (define-key sly-mrepl-mode-map
-		(read-kbd-macro paredit-backward-delete-key) nil)))
+            (lambda ()
+              (define-key sly-mrepl-mode-map
+                (read-kbd-macro paredit-backward-delete-key) nil)))
   ;; (add-hook 'clojure-mode-hook 'enable-paredit-mode)
   ;; (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
   )
@@ -199,7 +205,7 @@
     (interactive)
     (let ((file (ido-completing-read "Recent file: " recentf-list nil t)))
       (when file
-	(find-file file)))))
+        (find-file file)))))
 
 (use-package anzu
   :ensure t
@@ -253,36 +259,8 @@
 (use-package plantuml-mode :ensure t :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 (use-package flycheck-plantuml :ensure t)
 (use-package highlight-symbol :ensure t)
-
+(use-package editorconfig :ensure t :config (editorconfig-mode))
 (add-hook 'lisp-mode-hook 'highlight-symbol-mode)
-
-(use-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" default)))
- '(package-selected-packages
-   (quote
-    (editorconfig flycheck-plantuml epresent ob-rust org-present org-plus-contrib anzu recentf-ext which-key ripgrep projectile paredit company-quickhelp company magit smex flx-ido ido-completing-read+ sly ggtags ag dockerfile-mode dired-atool flycheck fic-mode use-package delight)))
- '(safe-local-variable-values (quote ((Package . CCL))))
- '(show-paren-mode t)
- '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 98 :width normal))))
- '(fic-author-face ((t (:foreground "orangered" :underline t))))
- '(fic-face ((t (:foreground "red" :weight bold)))))
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
