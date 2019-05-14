@@ -7,7 +7,7 @@
 (cond
  ((eq window-system 'ns)
   (setq ns-command-modifier 'meta
-	ns-alternate-modifier 'super))
+	ns-alternate-modifier 'super)))
 
 ;; (setq mac-option-key-is-meta nil)
 ;; (setq mac-command-key-is-meta t)
