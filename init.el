@@ -256,7 +256,10 @@
 (setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
 (setq org-babel-lisp-eval-fn 'sly-eval)
 
-(use-package plantuml-mode :ensure t :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
+(use-package plantuml-mode
+  :ensure t
+  :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
+
 (use-package flycheck-plantuml :ensure t)
 (use-package highlight-symbol :ensure t)
 (use-package editorconfig :ensure t :config (editorconfig-mode))
@@ -266,3 +269,5 @@
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
 (put 'downcase-region 'disabled nil)
 
+(setq custom-file "~/.emacs-custom.el")
+(ignore-errors (load custom-file))
