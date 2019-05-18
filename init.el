@@ -264,6 +264,12 @@
 (use-package highlight-symbol :ensure t)
 (use-package editorconfig :ensure t :config (editorconfig-mode))
 (add-hook 'lisp-mode-hook 'highlight-symbol-mode)
+(add-hook 'lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
+
+(use-package diff-hl
+  :ensure t
+  :config (global-diff-hl-mode))
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
