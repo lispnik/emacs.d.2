@@ -79,16 +79,15 @@
         (case system-type
           (windows-nt   
            `((ccl ("cmd" "/c" ,(expand-file-name "~/CCL/wx86cl64.exe"))) ;Allows SDL2 applications to start from SLIME
-             (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))) 
-          (t `((roswell ("ros" "run"))
-               (ecl ("ros" "-L" "ecl" "run"))
-;;               (sbcl ("ros" "-L" "sbcl" "run" "--" "--dynamic-space-size" "2048"))
-               (sbcl ("sbcl" "--dynamic-space-size" "2048"))
-	       )))
+             (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048"))))
+          (gnu/linux
+           `((ccl ("lx86cl64"))
+             (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+             (ecl ("ecl")))))
         sly-auto-start 'always
         sly-default-lisp (case system-type
                            (windows-nt 'ccl)
-                           (t 'sbcl)))
+                           (gnu/linux 'sbcl)))
   (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
@@ -148,27 +147,6 @@
   (use-package company-quickhelp
     :ensure t
     :hook (add-hook 'company-mode-hook 'company-quickhelp-mode)))
-
-;; (use-package rust-mode
-;;   :ensure t
-;;   :config
-;;   (add-hook 'rust-mode-hook (funcalls 'show-paren-mode 'electric-pair-mode))
-;;   (use-package flycheck-rust
-;;     :ensure t
-;;     :config
-;;     (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
-;;     (add-hook 'rust-mode-hook 'flycheck-mode))
-;;   (use-package cargo
-;;     :ensure t
-;;     :config
-;;     (add-hook 'rust-mode-hook 'cargo-minor-mode))
-;;   (use-package racer
-;;     :ensure t
-;;     :config
-;;     (add-hook 'rust-mode-hook 'racer-mode)
-;;     (add-hook 'racer-mode-hook 'eldoc-mode)
-;;     (add-hook 'racer-mode-hook 'company-mode))
-;;   (define-key rust-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package paredit
   :ensure t
