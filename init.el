@@ -249,6 +249,8 @@
   :ensure t
   :config (global-diff-hl-mode))
 
+(use-package yaml-mode :ensure t)
+
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
 (put 'downcase-region 'disabled nil)
