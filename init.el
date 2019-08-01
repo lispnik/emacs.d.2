@@ -249,6 +249,12 @@
   :ensure t
   :config (global-diff-hl-mode))
 
+(use-package edit-server
+  :ensure t
+  :config   (when (require 'edit-server nil t)
+              (setq edit-server-new-frame nil)
+              (edit-server-start)))
+
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
 (put 'downcase-region 'disabled nil)
