@@ -198,6 +198,8 @@
 ;;   (use-package company-restclient :ensure t)
 ;;   (use-package restclient-test :ensure t))
 
+(use-package lua-mode :ensure t)
+
 (use-package org
   :ensure org-plus-contrib
   :config
@@ -254,6 +256,7 @@
   :config   (when (require 'edit-server nil t)
               (setq edit-server-new-frame nil)
               (edit-server-start)))
+
 (use-package yaml-mode :ensure t)
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
