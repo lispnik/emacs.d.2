@@ -198,6 +198,8 @@
 ;;   (use-package company-restclient :ensure t)
 ;;   (use-package restclient-test :ensure t))
 
+(use-package lua-mode :ensure t)
+
 (use-package org
   :ensure org-plus-contrib
   :config
