@@ -171,7 +171,8 @@
 
 (use-package which-key
   :ensure t
-  :config (which-key-mode))
+  :config (which-key-mode)
+  :delight)
 
 (use-package recentf
   :bind (("C-x f" . recentf-ido-find-file))
@@ -190,7 +191,8 @@
   :config
   (global-anzu-mode 1)
   (global-set-key [remap query-replace] 'anzu-query-replace)
-  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
+  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+  :delight)
 
 ;; (use-package restclient
 ;;   :ensure t
@@ -242,7 +244,12 @@
 
 (use-package flycheck-plantuml :ensure t)
 (use-package highlight-symbol :ensure t)
-(use-package editorconfig :ensure t :config (editorconfig-mode))
+
+(use-package editorconfig
+  :ensure t
+  :config (editorconfig-mode)
+  :delight)
+
 (add-hook 'lisp-mode-hook 'highlight-symbol-mode)
 (add-hook 'lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
