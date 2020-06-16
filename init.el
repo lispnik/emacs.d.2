@@ -87,7 +87,8 @@
         sly-auto-start 'always
         sly-default-lisp (case system-type
                            (windows-nt 'ccl)
-                           (gnu/linux 'sbcl)))
+                           (gnu/linux 'sbcl)
+                           (darwin 'sbcl)))
   (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
