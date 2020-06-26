@@ -5,11 +5,11 @@
       blink-matching-paren nil
       default-directory "~/")
 (cond
- ((eq window-system 'ns)
+ ((eq window-system 'mac)
   (setq ns-command-modifier 'meta
-	ns-alternate-modifier 'super)))
+        ns-alternate-modifier 'super)))
 
-;; (setq mac-option-key-is-meta nil)
+ ;; (setq mac-option-key-is-meta nil)
 ;; (setq mac-command-key-is-meta t)
 ;; (setq mac-command-modifier 'meta)
 ;; (setq mac-option-modifier nil)
@@ -258,6 +258,7 @@
               (edit-server-start)))
 
 (use-package yaml-mode :ensure t)
+(use-package hy-mode :ensure t)
 
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
 ;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
