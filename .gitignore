@@ -10,3 +10,5 @@ ede-projects.el
 server
 projectile.cache
 url
+places
+transient
