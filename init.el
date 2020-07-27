@@ -86,7 +86,7 @@
              (ecl ("ecl")))))
         sly-auto-start 'always
         sly-default-lisp (case system-type
-                           (windows-nt 'ccl)
+                           (windows-nt 'sbcl)
                            (gnu/linux 'sbcl)))
   (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
   (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
