@@ -6,9 +6,8 @@
       blink-matching-paren nil
       default-directory "~/")
 
-(require 'cl)
-
 (defvar bootstrap-version)
+
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
@@ -66,13 +65,6 @@
   (add-hook 'c-mode-hook 'ggtags-mode)
   (add-hook 'c++-mode-hook 'ggtags-mode))
 
-(defun funcalls (&rest funcs)
-  "Returns a function that calls a list of zero-argument functions in FUNCS"
-  (lexical-let ((funcs funcs))
-    (lambda ()
-      (dolist (f funcs)
-        (funcall f)))))
-
 (use-package company
   :straight t
   :config
@@ -86,35 +78,31 @@
   :straight t
   :config
   (setq sly-ignore-protocol-mismatches t
-        sly-auto-start 'always
-
-        sly-lisp-implementations
-        (cl-case system-type
-          (windows-nt
-	   ;; Prefixing with "cmd" allows SDL2, IUP and other
-	   ;; graphical applications to start from SLIME
-           '((ccl ("cmd" "/c" "wx86cl64"))
-	     (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048"))))
-          (gnu/linux
-           '((ccl ("lx86cl64"))
-	     (sbcl ("sbcl" "--dynamic-space-size" "2048"))
-	     (ecl ("ecl")))))
-
-        sly-default-lisp
-        (cl-case system-type
-          (windows-nt 'ccl)
-          (gnu/linux 'sbcl)
-          (darwin 'sbcl)))
-  (add-hook 'sly-mode-hook (funcalls 'company-mode 'show-paren-mode))
-  (add-hook 'sly-mrepl-mode-hook (funcalls 'company-mode 'show-paren-mode))
+        sly-auto-start 'always)
+  (cond
+   ((eq system-type 'windows-nt)
+    ;; Prefixing with "cmd" allows SDL2, IUP and other
+    ;; graphical applications to start from SLIME
+    (setq sly-lisp-implementations
+          '((ccl ("cmd" "/c" "wx86cl64"))
+	    (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))))
+   ((eq system-type 'gnu/linux)
+    (setq sly-lisp-implementations
+          '((ccl ("lx86cl64"))
+            (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+            (ecl ("ecl"))))))
+  (add-hook 'sly-mode-hook 'company-mode)
+  (add-hook 'sly-mode-hook 'show-paren-mode)
+  (add-hook 'sly-mrepl-mode-hook 'company-mode)
+  (add-hook 'sly-mrepl-mode-hook 'show-paren-mode)
   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package magit
   :straight t
-;; :after (ido)
+  ;; :after (ido)
   :bind (("C-x g" . magit-status))
-;; :config
-;; (setq magit-completing-read-function 'magit-ido-completing-read)
+  ;; :config
+  ;; (setq magit-completing-read-function 'magit-ido-completing-read)
   )
 
 (use-package projectile
@@ -225,11 +213,11 @@
 
 
 
-;; ;; (use-package restclient
-;; ;;   :ensure t
-;; ;;   :config
-;; ;;   (use-package company-restclient :ensure t)
-;; ;;   (use-package restclient-test :ensure t))
+(use-package restclient
+  :straight t
+  :config
+  (use-package company-restclient :straight t)
+  (use-package restclient-test :straight t))
 
 ;; (use-package lua-mode :ensure t)
 
@@ -246,17 +234,30 @@
   :config
   (add-hook 'org-present-mode-hook 'my-turn-off-org-present)
   (add-hook 'org-present-mode-quit-hook 'my-turn-off-org-present))
-  (use-package ob-tangle)
-  (use-package ob-clojure
-    :config
-    (setq org-babel-clojure-backend 'cider))
+(use-package ob-tangle)
+(use-package ob-clojure
+  :config
+  (setq org-babel-clojure-backend 'cider))
 
 (use-package ob-J)
 
 (use-package epresent :straight t)
 
+;; (use-package org
+;;   :ensure org-plus-contrib
+;;   :config
+;;   (org-babel-do-load-languages
+;;    'org-babel-load-languages
+;;    '((lisp . t)
+;;      (emacs-lisp . t)
+;;      (clojure . t)
+;;      (java . t)
+;;      (J . t)
+;;      (plantuml . t)))
+;;   (add-hook 'org-mode-hook 'visual-line-mode))
+
 (use-package org
-  :ensure org-plus-contrib
+  :straight org-plus-contrib
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
