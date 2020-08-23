@@ -85,7 +85,7 @@
     ;; graphical applications to start from SLIME
     (setq sly-lisp-implementations
           '((ccl ("cmd" "/c" "wx86cl64"))
-	    (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))))
+	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe" "--dynamic-space-size" "2048")))))
    ((eq system-type 'gnu/linux)
     (setq sly-lisp-implementations
           '((ccl ("lx86cl64"))
@@ -350,3 +350,16 @@
 ;; (setq custom-file "~/.emacs-custom.el")
 ;; (ignore-errors (load custom-file))
 ;; (put 'erase-buffer 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "JetBrains Mono" :foundry "outline" :slant normal :weight normal :height 90 :width normal)))))
+(put 'dired-find-alternate-file 'disabled nil)
