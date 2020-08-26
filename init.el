@@ -243,6 +243,8 @@
 
 (use-package epresent :straight t)
 
+(use-package terraform-mode :straight t)
+
 ;; (use-package org
 ;;   :ensure org-plus-contrib
 ;;   :config
