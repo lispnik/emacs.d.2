@@ -177,45 +177,41 @@
 ;;   (add-hook 'cider-repl-mode-hook 'clj-refactor-mode)
 ;;   (cljr-add-keybindings-with-prefix "C-c m"))
 
-;; (use-package ido
-;;   :ensure t
-;;   :config
-;;   (ido-mode 1)
-;;   (ido-everywhere 1)
-;;   (use-package ido-completing-read+
-;;     :ensure t
-;;     :config
-;;     (ido-ubiquitous-mode 1))
-;;   (use-package flx-ido
-;;     :ensure t
-;;     :config
-;;     (flx-ido-mode 1)
-;;     (setq ido-enable-flex-matching t
-;;           id-use-faces nil)))
+(use-package ido
+  :straight t 
+  :config
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (use-package ido-completing-read+
+    :straight t
+    :config
+    (ido-ubiquitous-mode 1))
+  (use-package flx-ido
+    :straight t
+    :config
+    (flx-ido-mode 1)
+    (setq ido-enable-flex-matching t
+          id-use-faces nil)))
 
-;; (use-package smex
-;;   :ensure t
-;;   :bind (("M-x" . smex)
-;;          ("M-X" . smex-major-mode-commands)
-;;          ("C-c C-c M-x" . execute-extended-command))
-;;   :config
-;;   (smex-initialize))
+(use-package smex
+  :straight t
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)
+         ("C-c C-c M-x" . execute-extended-command))
+  :config
+  (smex-initialize))
 
-
-;; (use-package recentf
-;;   ;; :bind (("C-x f" . recentf-ido-find-file))
-;;   :config
-;;   (use-package recentf-ext :ensure t)
-;;   (recentf-mode 1)
-;;   ;; (defun recentf-ido-find-file ()
-;;   ;;   "Find a recent file using Ido."
-;;   ;;   (interactive)
-;;   ;;   (let ((file (ido-completing-read "Recent file: " recentf-list nil t)))
-;;   ;;     (when file
-;;   ;;       (find-file file))))
-;;   )
-
-
+(use-package recentf
+  :bind (("C-x f" . recentf-ido-find-file))
+  :config
+  (use-package recentf-ext :straight t)
+  (recentf-mode 1))
+;; (defun recentf-ido-find-file ()
+;;   "Find a recent file using Ido."
+;;   (interactive)
+;;   (let ((file (ido-completing-read "Recent file: " recentf-list nil t)))
+;;     (when file
+;;       (find-file file))))
 
 (use-package restclient
   :straight t
@@ -223,7 +219,7 @@
   (use-package company-restclient :straight t)
   (use-package restclient-test :straight t))
 
-;; (use-package lua-mode :ensure t)
+(use-package lua-mode :straight t)
 
 (defun my-turn-on-org-present ()
   (org-present-big)
@@ -249,19 +245,6 @@
 
 (use-package terraform-mode :straight t)
 
-;; (use-package org
-;;   :ensure org-plus-contrib
-;;   :config
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((lisp . t)
-;;      (emacs-lisp . t)
-;;      (clojure . t)
-;;      (java . t)
-;;      (J . t)
-;;      (plantuml . t)))
-;;   (add-hook 'org-mode-hook 'visual-line-mode))
-
 (use-package org
   :straight org-plus-contrib
   :config
@@ -275,14 +258,14 @@
      (plantuml . t)))
   (add-hook 'org-mode-hook 'visual-line-mode))
 
-;; (setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
-;; (setq org-babel-lisp-eval-fn 'sly-eval)
+(setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
+(setq org-babel-lisp-eval-fn 'sly-eval)
 
-;; (use-package plantuml-mode
-;;   :ensure t
-;;   :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
+(use-package plantuml-mode
+  :ensure t
+  :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 
-;; (use-package flycheck-plantuml :ensure t)
+(use-package flycheck-plantuml :ensure t)
 ;; (use-package edit-server
 ;;   :ensure t
 ;;   :config   (when (require 'edit-server nil t)
@@ -341,17 +324,14 @@
 ;;   (global-set-key (kbd "C-c t") 'counsel-load-theme)
 ;;   (global-set-key (kbd "C-c F") 'counsel-org-file))
 
-;; (use-package yaml-mode :ensure t)
-;; (use-package hy-mode :ensure t)
+(use-package yaml-mode :straight t)
+(use-package hy-mode :straight t)
 
-;; ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
-;; ;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
-;; (use-package base16-theme :ensure t)
-;; (put 'downcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'erase-buffer 'disabled nil)
 
 ;; (setq custom-file "~/.emacs-custom.el")
 ;; (ignore-errors (load custom-file))
-;; (put 'erase-buffer 'disabled nil)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
