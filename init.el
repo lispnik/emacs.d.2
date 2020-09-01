@@ -258,28 +258,19 @@
      (plantuml . t)))
   (add-hook 'org-mode-hook 'visual-line-mode))
 
-(setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
 (setq org-babel-lisp-eval-fn 'sly-eval)
 
 (use-package plantuml-mode
-  :ensure t
+  :straight t
   :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 
-(use-package flycheck-plantuml :ensure t)
+(use-package flycheck-plantuml :straight t)
+
 ;; (use-package edit-server
 ;;   :ensure t
 ;;   :config   (when (require 'edit-server nil t)
 ;;               (setq edit-server-new-frame nil)
 ;;               (edit-server-start)))
-
-;; ;; (use-package helm
-;; ;;   :ensure t
-;; ;;   :config
-;; ;;   (require 'helm-config)
-;; ;;   (global-set-key (kbd "M-x") 'helm-M-x)
-;; ;;   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-;; ;;   (global-set-key (kbd "C-x C-f") #'helm-find-files)
-;; ;;   (helm-mode 1))
 
 ;; (use-package ivy
 ;;   :ensure t
@@ -329,6 +320,7 @@
 
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
 
 ;; (setq custom-file "~/.emacs-custom.el")
 ;; (ignore-errors (load custom-file))
@@ -343,5 +335,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "JetBrains Mono" :foundry "outline" :slant normal :weight normal :height 90 :width normal)))))
-(put 'dired-find-alternate-file 'disabled nil)
+ '(default ((t (:family "JetBrains Mono" :foundry "outline" :slant normal :weight normal :height 120 :width normal)))))
