@@ -22,6 +22,7 @@
 
 (straight-use-package 'use-package)
 
+(use-package bind-key :straight t)
 (use-package delight :straight t)
 
 (use-package ediff
@@ -105,9 +106,11 @@
   :straight t
   ;; :after (ido)
   :bind (("C-x g" . magit-status))
-  ;; :config
+  :config
   ;; (setq magit-completing-read-function 'magit-ido-completing-read)
-  )
+  ;; From https://github.com/dgutov/diff-hl 
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (use-package projectile
   :straight t 
