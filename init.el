@@ -93,7 +93,7 @@
             (ecl ("ecl")))))
    ((eq system-type 'darwin)
     (setq sly-lisp-implementations
-          '((ccl ("ccl64"))
+          '((ccl ("/usr/local/bin/ccl64"))
             (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))))))
   (add-hook 'sly-mode-hook 'company-mode)
   (add-hook 'sly-mode-hook 'show-paren-mode)
