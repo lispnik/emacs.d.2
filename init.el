@@ -320,6 +320,7 @@
 
 (use-package yaml-mode :straight t)
 (use-package hy-mode :straight t)
+(use-package elvish-mode :straight t)
 
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
