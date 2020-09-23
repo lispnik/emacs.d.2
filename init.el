@@ -22,6 +22,7 @@
 
 (straight-use-package 'use-package)
 
+(use-package bind-key :straight t)
 (use-package delight :straight t)
 
 (use-package ediff
@@ -85,7 +86,7 @@
     ;; graphical applications to start from SLIME
     (setq sly-lisp-implementations
           '((ccl ("cmd" "/c" "wx86cl64"))
-	    (sbcl ("cmd" "/c" "sbcl" "--dynamic-space-size" "2048")))))
+	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe" "--dynamic-space-size" "2048")))))
    ((eq system-type 'gnu/linux)
     (setq sly-lisp-implementations
           '((ccl ("lx86cl64"))
@@ -93,7 +94,7 @@
             (ecl ("ecl")))))
    ((eq system-type 'darwin)
     (setq sly-lisp-implementations
-          '((ccl ("ccl64"))
+          '((ccl ("/usr/local/bin/ccl64"))
             (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))))))
   (add-hook 'sly-mode-hook 'company-mode)
   (add-hook 'sly-mode-hook 'show-paren-mode)
@@ -105,9 +106,11 @@
   :straight t
   ;; :after (ido)
   :bind (("C-x g" . magit-status))
-  ;; :config
+  :config
   ;; (setq magit-completing-read-function 'magit-ido-completing-read)
-  )
+  ;; From https://github.com/dgutov/diff-hl 
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (use-package projectile
   :straight t 
@@ -178,44 +181,40 @@
 ;;   (cljr-add-keybindings-with-prefix "C-c m"))
 
 ;; (use-package ido
-;;   :ensure t
+;;   :straight t 
 ;;   :config
 ;;   (ido-mode 1)
 ;;   (ido-everywhere 1)
 ;;   (use-package ido-completing-read+
-;;     :ensure t
+;;     :straight t
 ;;     :config
 ;;     (ido-ubiquitous-mode 1))
 ;;   (use-package flx-ido
-;;     :ensure t
+;;     :straight t
 ;;     :config
 ;;     (flx-ido-mode 1)
 ;;     (setq ido-enable-flex-matching t
 ;;           id-use-faces nil)))
 
-;; (use-package smex
-;;   :ensure t
-;;   :bind (("M-x" . smex)
-;;          ("M-X" . smex-major-mode-commands)
-;;          ("C-c C-c M-x" . execute-extended-command))
-;;   :config
-;;   (smex-initialize))
+(use-package smex
+  :straight t
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)
+         ("C-c C-c M-x" . execute-extended-command))
+  :config
+  (smex-initialize))
 
-
-;; (use-package recentf
-;;   ;; :bind (("C-x f" . recentf-ido-find-file))
-;;   :config
-;;   (use-package recentf-ext :ensure t)
-;;   (recentf-mode 1)
-;;   ;; (defun recentf-ido-find-file ()
-;;   ;;   "Find a recent file using Ido."
-;;   ;;   (interactive)
-;;   ;;   (let ((file (ido-completing-read "Recent file: " recentf-list nil t)))
-;;   ;;     (when file
-;;   ;;       (find-file file))))
-;;   )
-
-
+(use-package recentf
+;;  :bind (("C-x f" . recentf-ido-find-file))
+  :config
+  (use-package recentf-ext :straight t)
+  (recentf-mode 1))
+;; (defun recentf-ido-find-file ()
+;;   "Find a recent file using Ido."
+;;   (interactive)
+;;   (let ((file (ido-completing-read "Recent file: " recentf-list nil t)))
+;;     (when file
+;;       (find-file file))))
 
 (use-package restclient
   :straight t
@@ -223,7 +222,7 @@
   (use-package company-restclient :straight t)
   (use-package restclient-test :straight t))
 
-;; (use-package lua-mode :ensure t)
+(use-package lua-mode :straight t)
 
 (defun my-turn-on-org-present ()
   (org-present-big)
@@ -265,6 +264,9 @@
 ;;      (plantuml . t)))
 ;;   (add-hook 'org-mode-hook 'visual-line-mode))
 
+
+(use-package terraform-mode :straight t)
+
 (use-package org
   :straight org-plus-contrib
   :config
@@ -278,80 +280,82 @@
      (plantuml . t)))
   (add-hook 'org-mode-hook 'visual-line-mode))
 
-;; (setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
-;; (setq org-babel-lisp-eval-fn 'sly-eval)
+(setq org-babel-lisp-eval-fn 'sly-eval)
 
-;; (use-package plantuml-mode
-;;   :ensure t
-;;   :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
+(use-package plantuml-mode
+  :straight t
+  :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 
-;; (use-package flycheck-plantuml :ensure t)
+(use-package flycheck-plantuml :straight t)
+
 ;; (use-package edit-server
 ;;   :ensure t
 ;;   :config   (when (require 'edit-server nil t)
 ;;               (setq edit-server-new-frame nil)
 ;;               (edit-server-start)))
 
-;; ;; (use-package helm
-;; ;;   :ensure t
-;; ;;   :config
-;; ;;   (require 'helm-config)
-;; ;;   (global-set-key (kbd "M-x") 'helm-M-x)
-;; ;;   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-;; ;;   (global-set-key (kbd "C-x C-f") #'helm-find-files)
-;; ;;   (helm-mode 1))
+(use-package ivy
+  :straight t
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (use-package counsel :straight t)
+  (use-package counsel-projectile
+    :straight t
+    :config (counsel-projectile-mode))
+  (global-set-key (kbd "C-s") 'swiper-isearch)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "M-y") 'counsel-yank-pop)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "<f2> j") 'counsel-set-variable)
+  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+  (global-set-key (kbd "C-c v") 'ivy-push-view)
+  (global-set-key (kbd "C-c V") 'ivy-pop-view)
 
-;; (use-package ivy
-;;   :ensure t
-;;   :config
-;;   (setq ivy-use-virtual-buffers t)
-;;   (setq ivy-count-format "(%d/%d) ")
-;;   (use-package counsel :ensure t)
-;;   (use-package counsel-projectile
-;;     :ensure t
-;;     :config (counsel-projectile-mode))
-;;   (global-set-key (kbd "C-s") 'swiper-isearch)
-;;   (global-set-key (kbd "M-x") 'counsel-M-x)
-;;   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-;;   (global-set-key (kbd "M-y") 'counsel-yank-pop)
-;;   (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-;;   (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-;;   (global-set-key (kbd "<f1> l") 'counsel-find-library)
-;;   (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-;;   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-;;   (global-set-key (kbd "<f2> j") 'counsel-set-variable)
-;;   (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-;;   (global-set-key (kbd "C-c v") 'ivy-push-view)
-;;   (global-set-key (kbd "C-c V") 'ivy-pop-view)
+  (global-set-key (kbd "C-c c") 'counsel-compile)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c L") 'counsel-git-log)
+  (global-set-key (kbd "C-c k") 'counsel-rg)
+  (global-set-key (kbd "C-c m") 'counsel-linux-app)
+  (global-set-key (kbd "C-c n") 'counsel-fzf)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-c J") 'counsel-file-jump)
+  ;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  ;; (global-set-key (kbd "C-c w") 'counsel-wmctrl)
 
-;;   (global-set-key (kbd "C-c c") 'counsel-compile)
-;;   (global-set-key (kbd "C-c g") 'counsel-git)
-;;   (global-set-key (kbd "C-c j") 'counsel-git-grep)
-;;   (global-set-key (kbd "C-c L") 'counsel-git-log)
-;;   (global-set-key (kbd "C-c k") 'counsel-rg)
-;;   (global-set-key (kbd "C-c m") 'counsel-linux-app)
-;;   (global-set-key (kbd "C-c n") 'counsel-fzf)
-;;   (global-set-key (kbd "C-x l") 'counsel-locate)
-;;   (global-set-key (kbd "C-c J") 'counsel-file-jump)
-;;   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-;;   (global-set-key (kbd "C-c w") 'counsel-wmctrl)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "C-c b") 'counsel-bookmark)
+  (global-set-key (kbd "C-c d") 'counsel-descbinds)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c o") 'counsel-outline)
+  (global-set-key (kbd "C-c t") 'counsel-load-theme)
+  (global-set-key (kbd "C-c F") 'counsel-org-file))
 
-;;   (global-set-key (kbd "C-c C-r") 'ivy-resume)
-;;   (global-set-key (kbd "C-c b") 'counsel-bookmark)
-;;   (global-set-key (kbd "C-c d") 'counsel-descbinds)
-;;   (global-set-key (kbd "C-c g") 'counsel-git)
-;;   (global-set-key (kbd "C-c o") 'counsel-outline)
-;;   (global-set-key (kbd "C-c t") 'counsel-load-theme)
-;;   (global-set-key (kbd "C-c F") 'counsel-org-file))
+(use-package yaml-mode :straight t)
+(use-package hy-mode :straight t)
+(use-package elvish-mode :straight t)
 
-;; (use-package yaml-mode :ensure t)
-;; (use-package hy-mode :ensure t)
-
-;; ;; (use-package doom-themes :ensure t :config (load-theme 'doom-opera-light))
-;; ;; (use-package doom-themes :ensure t :config (load-theme 'doom-one))
-;; (use-package base16-theme :ensure t)
-;; (put 'downcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'erase-buffer 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
 
 ;; (setq custom-file "~/.emacs-custom.el")
 ;; (ignore-errors (load custom-file))
-;; (put 'erase-buffer 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "JetBrains Mono" :foundry "outline" :slant normal :weight normal :height 120 :width normal)))))
