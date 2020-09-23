@@ -247,6 +247,11 @@
 
 (use-package epresent :straight t)
 
+(use-package exec-path-from-shell
+  :straight t
+  :if (memq window-system '(mac ns x))
+  :config (exec-path-from-shell-initialize))
+
 ;; (use-package org
 ;;   :ensure org-plus-contrib
 ;;   :config
