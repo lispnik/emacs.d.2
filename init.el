@@ -196,25 +196,25 @@
 ;;     (setq ido-enable-flex-matching t
 ;;           id-use-faces nil)))
 
-(use-package smex
-  :straight t
-  :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)
-         ("C-c C-c M-x" . execute-extended-command))
-  :config
-  (smex-initialize))
+;; (use-package smex
+;;   :straight t
+;;   :bind (("M-x" . smex)
+;;          ("M-X" . smex-major-mode-commands)
+;;          ("C-c C-c M-x" . execute-extended-command))
+;;   :config
+;;   (smex-initialize))
 
-(use-package recentf
-;;  :bind (("C-x f" . recentf-ido-find-file))
-  :config
-  (use-package recentf-ext :straight t)
-  (recentf-mode 1))
-;; (defun recentf-ido-find-file ()
-;;   "Find a recent file using Ido."
-;;   (interactive)
-;;   (let ((file (ido-completing-read "Recent file: " recentf-list nil t)))
-;;     (when file
-;;       (find-file file))))
+;; (use-package recentf
+;; ;;  :bind (("C-x f" . recentf-ido-find-file))
+;;   :config
+;;   (use-package recentf-ext :straight t)
+;;   (recentf-mode 1))
+;; ;; (defun recentf-ido-find-file ()
+;; ;;   "Find a recent file using Ido."
+;; ;;   (interactive)
+;; ;;   (let ((file (ido-completing-read "Recent file: " recentf-list nil t)))
+;; ;;     (when file
+;; ;;       (find-file file))))
 
 (use-package restclient
   :straight t
