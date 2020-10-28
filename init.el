@@ -308,6 +308,9 @@
     (selectrum-prescient-mode +1)
     (prescient-persist-mode +1)))
 
+(use-package geiser :straight t)
+(use-package ac-geiser :straight t)
+
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
