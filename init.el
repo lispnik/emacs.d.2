@@ -24,6 +24,12 @@
 
 (straight-use-package 'use-package)
 
+(use-package almost-mono-themes
+  :straight t
+  :config
+  ;; (load-theme 'almost-mono-black t)
+  (load-theme 'almost-mono-white t))
+
 (use-package bind-key :straight t)
 (use-package delight :straight t)
 
@@ -309,6 +315,9 @@
     :config 
     (selectrum-prescient-mode +1)
     (prescient-persist-mode +1)))
+
+(use-package geiser :straight t)
+(use-package ac-geiser :straight t)
 
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
