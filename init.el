@@ -26,9 +26,7 @@
 
 (use-package almost-mono-themes
   :straight t
-  :config
-  ;; (load-theme 'almost-mono-black t)
-  (load-theme 'almost-mono-white t))
+  :config (load-theme 'almost-mono-white t))
 
 (use-package bind-key :straight t)
 (use-package delight :straight t)
@@ -77,7 +75,9 @@
 (use-package company
   :straight t
   :config
-  (setq company-tooltip-align-annotations t))
+  (setq company-tooltip-align-annotations t)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode)
+  (define-key emacs-lisp-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package company-quickhelp
   :straight t
@@ -90,8 +90,8 @@
         sly-auto-start 'always)
   (cond
    ((eq system-type 'windows-nt)
-    ;; Prefixing with "cmd" allows SDL2, IUP and other
-    ;; graphical applications to start from SLIME
+    ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
+    ;; start from SLIME
     (setq sly-lisp-implementations
           '((ccl ("cmd" "/c" "wx86cl64"))
 	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe" "--dynamic-space-size" "2048")))))
@@ -99,11 +99,13 @@
     (setq sly-lisp-implementations
           '((ccl ("lx86cl64"))
             (sbcl ("sbcl" "--dynamic-space-size" "2048"))
-            (ecl ("ecl")))))
+            (ecl ("ecl"))
+            (ros ("ros" "run")))))
    ((eq system-type 'darwin)
     (setq sly-lisp-implementations
           '((ccl ("/usr/local/bin/ccl64"))
-            (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))))))
+            (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))
+            (ros ("ros" "run"))))))
   (add-hook 'sly-mode-hook 'company-mode)
   (add-hook 'sly-mode-hook 'show-paren-mode)
   (add-hook 'sly-mrepl-mode-hook 'company-mode)
@@ -136,9 +138,6 @@
   :config (editorconfig-mode)
   :delight)
 
-(use-package yaml-mode :straight t)
-(use-package hy-mode :straight t)
-
 (use-package paredit
   :straight t
   :config
@@ -148,10 +147,7 @@
   (add-hook 'sly-repl-mode-hook
             (lambda ()
               (define-key sly-mrepl-mode-map
-                (read-kbd-macro paredit-backward-delete-key) nil)))
-  ;; (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-  ;; (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
-  )
+                (read-kbd-macro paredit-backward-delete-key) nil))))
 
 (use-package highlight-symbol :straight t)
 
@@ -170,23 +166,6 @@
   (global-set-key [remap query-replace] 'anzu-query-replace)
   (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
   :delight)
-
-;; (use-package clojure-mode :ensure t)
-;; (use-package cider
-;;   :after (clojure-mode)
-;;   :ensure t
-;;   :bind (("C-c M-j" . cider-jack-in)
-;;          ("C-c M-J" . cider-jack-in-clojurescript)
-;;       ("C-c M-c" . cider-connect))
-;;   :config
-;;   (setq cider-default-repl-command "lein"))
-;; (use-package clj-refactor
-;;   :after (clojure-mode cider)
-;;   :ensure t
-;;   :config
-;;   (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-;;   (add-hook 'cider-repl-mode-hook 'clj-refactor-mode)
-;;   (cljr-add-keybindings-with-prefix "C-c m"))
 
 ;; (use-package ido
 ;;   :straight t 
@@ -272,9 +251,6 @@
 ;;      (plantuml . t)))
 ;;   (add-hook 'org-mode-hook 'visual-line-mode))
 
-
-(use-package terraform-mode :straight t)
-
 (use-package org
   :straight org-plus-contrib
   :config
@@ -294,17 +270,12 @@
   :straight t
   :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 
-(use-package flycheck-plantuml :straight t)
-
-;; (use-package edit-server
-;;   :ensure t
-;;   :config   (when (require 'edit-server nil t)
-;;               (setq edit-server-new-frame nil)
-;;               (edit-server-start)))
-
-(use-package yaml-mode :straight t)
-(use-package hy-mode :straight t)
+(use-package ac-geiser :straight t)
 (use-package elvish-mode :straight t)
+(use-package flycheck-plantuml :straight t)
+(use-package geiser :straight t)
+(use-package hy-mode :straight t)
+(use-package yaml-mode :straight t)
 
 (use-package selectrum
   :straight t
@@ -313,11 +284,8 @@
   (use-package selectrum-prescient
     :straight t
     :config 
-    (selectrum-prescient-mode +1)
-    (prescient-persist-mode +1)))
-
-(use-package geiser :straight t)
-(use-package ac-geiser :straight t)
+    (selectrum-prescient-mode 1)
+    (prescient-persist-mode 1)))
 
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
@@ -328,8 +296,6 @@
     (load "/usr/local/share/emacs/site-lisp/gforth/gforth")
     (add-to-list 'auto-mode-alist '(".fs" . forth-mode))))
 
-;; (setq custom-file "~/.emacs-custom.el")
-;; (ignore-errors (load custom-file))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
