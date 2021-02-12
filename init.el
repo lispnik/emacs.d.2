@@ -4,7 +4,9 @@
       inhibit-startup-echo-area-message (user-login-name)
       ring-bell-function 'ignore
       blink-matching-paren nil
-      default-directory "~/")
+      default-directory "~/"
+      mac-option-modifier 'meta
+      mac-command-modifier 'super)
 
 (defvar bootstrap-version)
 
@@ -324,10 +326,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(menu-bar-mode nil)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-)
+ '(default ((t (:family "Monaco" :foundry "nil" :slant normal :weight normal :height 130 :width normal)))))
