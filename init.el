@@ -24,9 +24,9 @@
 
 (straight-use-package 'use-package)
 
-(use-package almost-mono-themes
-  :straight t
-  :config (load-theme 'almost-mono-white t))
+;; (use-package almost-mono-themes
+;;   :straight t
+;;   :config (load-theme 'almost-mono-white t))
 
 (use-package bind-key :straight t)
 (use-package delight :straight t)
@@ -138,16 +138,16 @@
   :config (editorconfig-mode)
   :delight)
 
-(use-package paredit
-  :straight t
-  :config
-  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'sly-mrepl-mode-hook 'enable-paredit-mode)
-  (add-hook 'sly-repl-mode-hook
-            (lambda ()
-              (define-key sly-mrepl-mode-map
-                (read-kbd-macro paredit-backward-delete-key) nil))))
+;; (use-package paredit
+;;   :straight t
+;;   :config
+;;   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'sly-mrepl-mode-hook 'enable-paredit-mode)
+;;   (add-hook 'sly-repl-mode-hook
+;;             (lambda ()
+;;               (define-key sly-mrepl-mode-map
+;;                 (read-kbd-macro paredit-backward-delete-key) nil))))
 
 (use-package highlight-symbol :straight t)
 
@@ -287,6 +287,8 @@
     (selectrum-prescient-mode 1)
     (prescient-persist-mode 1)))
 
+(use-package terraform-mode :straight t)
+
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -301,7 +303,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(menu-bar-mode nil)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
