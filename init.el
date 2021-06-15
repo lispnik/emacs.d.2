@@ -290,6 +290,10 @@
 (use-package terraform-mode :straight t)
 (use-package vterm :straight t)
 
+(use-package julia-snail :straight t
+  :requires vterm
+  :hook (julia-mode . julia-snail-mode))
+
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
