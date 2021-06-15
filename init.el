@@ -252,7 +252,7 @@
 ;;   (add-hook 'org-mode-hook 'visual-line-mode))
 
 (use-package org
-  :straight org-plus-contrib
+  :straight org
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -270,10 +270,10 @@
   :straight t
   :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 
-(use-package ac-geiser :straight t)
+;; (use-package ac-geiser :straight t)
 (use-package elvish-mode :straight t)
 (use-package flycheck-plantuml :straight t)
-(use-package geiser :straight t)
+;; (use-package geiser :straight t)
 (use-package hy-mode :straight t)
 (use-package yaml-mode :straight t)
 
@@ -288,6 +288,7 @@
     (prescient-persist-mode 1)))
 
 (use-package terraform-mode :straight t)
+(use-package vterm :straight t)
 
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
