@@ -24,9 +24,9 @@
 
 (straight-use-package 'use-package)
 
-;; (use-package almost-mono-themes
-;;   :straight t
-;;   :config (load-theme 'almost-mono-white t))
+(use-package almost-mono-themes
+  :straight t
+  :config (load-theme 'almost-mono-white t))
 
 (use-package bind-key :straight t)
 (use-package delight :straight t)
