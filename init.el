@@ -294,6 +294,8 @@
   :requires vterm
   :hook (julia-mode . julia-snail-mode))
 
+(use-package nim-mode :straight t)
+
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
