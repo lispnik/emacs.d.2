@@ -238,19 +238,6 @@
   :if (memq window-system '(mac ns x))
   :config (exec-path-from-shell-initialize))
 
-;; (use-package org
-;;   :ensure org-plus-contrib
-;;   :config
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((lisp . t)
-;;      (emacs-lisp . t)
-;;      (clojure . t)
-;;      (java . t)
-;;      (J . t)
-;;      (plantuml . t)))
-;;   (add-hook 'org-mode-hook 'visual-line-mode))
-
 (use-package org
   :straight org
   :config
