@@ -294,14 +294,15 @@
   :requires vterm
   :hook (julia-mode . julia-snail-mode))
 
+(use-package erlang :straight t)
+(use-package lfe-mode :straight t)
+(use-package elixir-mode :straight t)
+
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 
-(ignore-errors
-  (progn
-    (load "/usr/local/share/emacs/site-lisp/gforth/gforth")
-    (add-to-list 'auto-mode-alist '(".fs" . forth-mode))))
+(use-package forth-mode :straight t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -309,6 +310,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(tool-bar-mode nil))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
