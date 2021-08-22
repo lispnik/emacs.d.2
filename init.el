@@ -8,6 +8,9 @@
       mac-option-modifier 'meta
       mac-command-modifier 'super)
 
+(desktop-save-mode 1)
+(savehist-mode 1)
+
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -24,9 +27,9 @@
 
 (straight-use-package 'use-package)
 
-(use-package almost-mono-themes
-  :straight t
-  :config (load-theme 'almost-mono-white t))
+;; (use-package almost-mono-themes
+;;  :straight t
+;;  :config (load-theme 'almost-mono-white t))
 
 (use-package bind-key :straight t)
 (use-package delight :straight t)
@@ -83,34 +86,47 @@
   :straight t
   :hook (add-hook 'company-mode-hook 'company-quickhelp-mode))
 
-(use-package sly
+;; (use-package sly
+;;   :straight t
+;;   :config
+;;   (setq sly-ignore-protocol-mismatches t
+;;         sly-auto-start 'always)
+;;   (cond
+;;    ((eq system-type 'windows-nt)
+;;     ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
+;;     ;; start from SLIME
+;;     (setq sly-lisp-implementations
+;;           '((ccl ("cmd" "/c" "wx86cl64"))
+;; 	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe" "--dynamic-space-size" "2048")))))
+;;    ((eq system-type 'gnu/linux)
+;;     (setq sly-lisp-implementations
+;;           '((ccl ("lx86cl64"))
+;;             (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+;;             (ecl ("ecl"))
+;;             (ros ("ros" "run")))))
+;;    ((eq system-type 'darwin)
+;;     (setq sly-lisp-implementations
+;;           `((ccl ("/usr/local/bin/ccl64"))
+;;             (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))
+;;             (abcl ("java" "-jar" ,(expand-file-name "~/.local/abcl.jar")))
+;;             (ros ("ros" "run"))))))
+;;   (add-hook 'sly-mode-hook 'company-mode)
+;;   (add-hook 'sly-mode-hook 'show-paren-mode)
+;;   (add-hook 'sly-mrepl-mode-hook 'company-mode)
+;;   (add-hook 'sly-mrepl-mode-hook 'show-paren-mode)
+;;   (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
+
+(use-package slime
   :straight t
   :config
-  (setq sly-ignore-protocol-mismatches t
-        sly-auto-start 'always)
-  (cond
-   ((eq system-type 'windows-nt)
-    ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
-    ;; start from SLIME
-    (setq sly-lisp-implementations
-          '((ccl ("cmd" "/c" "wx86cl64"))
-	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe" "--dynamic-space-size" "2048")))))
-   ((eq system-type 'gnu/linux)
-    (setq sly-lisp-implementations
-          '((ccl ("lx86cl64"))
-            (sbcl ("sbcl" "--dynamic-space-size" "2048"))
-            (ecl ("ecl"))
-            (ros ("ros" "run")))))
-   ((eq system-type 'darwin)
-    (setq sly-lisp-implementations
-          '((ccl ("/usr/local/bin/ccl64"))
-            (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))
-            (ros ("ros" "run"))))))
-  (add-hook 'sly-mode-hook 'company-mode)
-  (add-hook 'sly-mode-hook 'show-paren-mode)
-  (add-hook 'sly-mrepl-mode-hook 'company-mode)
-  (add-hook 'sly-mrepl-mode-hook 'show-paren-mode)
-  (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
+  (setq slime-lisp-implementations
+        `((sbcl ("sbcl" "--dynamic-space-size" "2048"))
+          (abcl ("abcl"))))
+  (add-hook 'slime-mode-hook 'company-mode)
+  (add-hook 'slime-mode-hook 'show-paren-mode)
+  (add-hook 'slime-repl-mode-hook 'company-mode)
+  (add-hook 'slime-repl-mode-hook 'show-paren-mode)
+  (define-key slime-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package magit
   :straight t
@@ -264,7 +280,7 @@
      (plantuml . t)))
   (add-hook 'org-mode-hook 'visual-line-mode))
 
-(setq org-babel-lisp-eval-fn 'sly-eval)
+(setq org-babel-lisp-eval-fn 'slime-eval)
 
 (use-package plantuml-mode
   :straight t
