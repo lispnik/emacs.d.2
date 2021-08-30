@@ -24,9 +24,9 @@
 
 (straight-use-package 'use-package)
 
-(use-package almost-mono-themes
-  :straight t
-  :config (load-theme 'almost-mono-white t))
+;; (use-package almost-mono-themes
+;;  :straight t
+;;  :config (load-theme 'almost-mono-white t))
 
 (use-package bind-key :straight t)
 (use-package delight :straight t)
@@ -87,7 +87,8 @@
   :straight t
   :config
   (setq sly-ignore-protocol-mismatches t
-        sly-auto-start 'always)
+        sly-auto-start 'always
+        sly-mrepl-pop-sylvester nil)
   (cond
    ((eq system-type 'windows-nt)
     ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
@@ -288,11 +289,11 @@
     (prescient-persist-mode 1)))
 
 (use-package terraform-mode :straight t)
-(use-package vterm :straight t)
 
-(use-package julia-snail :straight t
-  :requires vterm
-  :hook (julia-mode . julia-snail-mode))
+;; (use-package vterm :straight t)
+;; (use-package julia-snail :straight t
+;;  :requires vterm
+;; :hook (julia-mode . julia-snail-mode))
 
 (use-package nim-mode :straight t)
 
@@ -310,10 +311,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(font-use-system-font t)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Monaco" :foundry "nil" :slant normal :weight normal :height 130 :width normal)))))
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 113 :width normal)))))
