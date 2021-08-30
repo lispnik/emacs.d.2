@@ -8,6 +8,9 @@
       mac-option-modifier 'meta
       mac-command-modifier 'super)
 
+(desktop-save-mode 1)
+(savehist-mode 1)
+
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -85,17 +88,18 @@
 
 (use-package sly
   :straight t
-  :config
+  :config 
   (setq sly-ignore-protocol-mismatches t
         sly-auto-start 'always
         sly-mrepl-pop-sylvester nil)
   (cond
    ((eq system-type 'windows-nt)
     ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
-    ;; start from SLIME
+    ;; start from Sly
     (setq sly-lisp-implementations
           '((ccl ("cmd" "/c" "wx86cl64"))
-	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe" "--dynamic-space-size" "2048")))))
+	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe"
+                   "--dynamic-space-size" "2048")))))
    ((eq system-type 'gnu/linux)
     (setq sly-lisp-implementations
           '((ccl ("lx86cl64"))
@@ -239,19 +243,6 @@
   :if (memq window-system '(mac ns x))
   :config (exec-path-from-shell-initialize))
 
-;; (use-package org
-;;   :ensure org-plus-contrib
-;;   :config
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((lisp . t)
-;;      (emacs-lisp . t)
-;;      (clojure . t)
-;;      (java . t)
-;;      (J . t)
-;;      (plantuml . t)))
-;;   (add-hook 'org-mode-hook 'visual-line-mode))
-
 (use-package org
   :straight org
   :config
@@ -295,16 +286,15 @@
 ;;  :requires vterm
 ;; :hook (julia-mode . julia-snail-mode))
 
-(use-package nim-mode :straight t)
+(use-package erlang :straight t)
+(use-package lfe-mode :straight t)
+(use-package elixir-mode :straight t)
 
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 
-(ignore-errors
-  (progn
-    (load "/usr/local/share/emacs/site-lisp/gforth/gforth")
-    (add-to-list 'auto-mode-alist '(".fs" . forth-mode))))
+(use-package forth-mode :straight t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -313,6 +303,7 @@
  ;; If there is more than one, they won't work right.
  '(font-use-system-font t)
  '(tool-bar-mode nil))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
