@@ -10,3 +10,7 @@ ede-projects.el
 server
 projectile.cache
 url
+session.*
+straight
+transient
+var
