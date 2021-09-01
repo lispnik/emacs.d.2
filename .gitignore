@@ -14,3 +14,5 @@ session.*
 straight
 transient
 var
+.*.desktop*
+history
