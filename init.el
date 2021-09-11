@@ -295,6 +295,7 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (use-package forth-mode :straight t)
+(use-package nasm-mode :straight t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
