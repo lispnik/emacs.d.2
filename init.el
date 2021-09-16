@@ -8,6 +8,9 @@
       mac-option-modifier 'meta
       mac-command-modifier 'super)
 
+(desktop-save-mode 1)
+(savehist-mode 1)
+
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -25,8 +28,8 @@
 (straight-use-package 'use-package)
 
 ;; (use-package almost-mono-themes
-;;   :straight t
-;;   :config (load-theme 'almost-mono-white t))
+;;  :straight t
+;;  :config (load-theme 'almost-mono-white t))
 
 (use-package bind-key :straight t)
 (use-package delight :straight t)
@@ -85,16 +88,18 @@
 
 (use-package sly
   :straight t
-  :config
+  :config 
   (setq sly-ignore-protocol-mismatches t
-        sly-auto-start 'always)
+        sly-auto-start 'always
+        sly-mrepl-pop-sylvester nil)
   (cond
    ((eq system-type 'windows-nt)
     ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
-    ;; start from SLIME
+    ;; start from Sly
     (setq sly-lisp-implementations
           '((ccl ("cmd" "/c" "wx86cl64"))
-	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe" "--dynamic-space-size" "2048")))))
+	    (sbcl ("cmd" "/c" "c:/program files/steel bank common lisp/2.0.0/sbcl.exe"
+                   "--dynamic-space-size" "2048")))))
    ((eq system-type 'gnu/linux)
     (setq sly-lisp-implementations
           '((ccl ("lx86cl64"))
@@ -290,11 +295,11 @@
     (prescient-persist-mode 1)))
 
 (use-package terraform-mode :straight t)
-(use-package vterm :straight t)
 
-(use-package julia-snail :straight t
-  :requires vterm
-  :hook (julia-mode . julia-snail-mode))
+;; (use-package vterm :straight t)
+;; (use-package julia-snail :straight t
+;;  :requires vterm
+;; :hook (julia-mode . julia-snail-mode))
 
 (use-package erlang :straight t)
 (use-package lfe-mode :straight t)
@@ -305,6 +310,7 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (use-package forth-mode :straight t)
+(use-package nasm-mode :straight t)
 
 (use-package yasnippet :straight t)
 (use-package yasnippet-snippets :straight t)
@@ -325,14 +331,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+<<<<<<< HEAD
  '(menu-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(yas-global-mode t))
+=======
+ '(font-use-system-font t)
+ '(tool-bar-mode nil))
+>>>>>>> 39bab7294e469df6b30661fb6fec8cf36fdd0723
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Monaco" :foundry "nil" :slant normal :weight normal :height 130 :width normal)))))
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 113 :width normal)))))
