@@ -138,16 +138,16 @@
   :config (editorconfig-mode)
   :delight)
 
-;; (use-package paredit
-;;   :straight t
-;;   :config
-;;   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-;;   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-;;   (add-hook 'sly-mrepl-mode-hook 'enable-paredit-mode)
-;;   (add-hook 'sly-repl-mode-hook
-;;             (lambda ()
-;;               (define-key sly-mrepl-mode-map
-;;                 (read-kbd-macro paredit-backward-delete-key) nil))))
+(use-package paredit
+  :straight t
+  :config
+  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'sly-mrepl-mode-hook 'enable-paredit-mode)
+  (add-hook 'sly-repl-mode-hook
+            (lambda ()
+              (define-key sly-mrepl-mode-map
+                (read-kbd-macro paredit-backward-delete-key) nil))))
 
 (use-package highlight-symbol :straight t)
 
@@ -257,6 +257,21 @@
   :straight t
   :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
 
+(use-package org-roam
+  :straight t
+  :custom (org-roam-directory (file-truename "~/Roam/"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-db-autosync-mode)
+  ;; (require 'org-roam-protocol)
+  )
+
 ;; (use-package ac-geiser :straight t)
 (use-package elvish-mode :straight t)
 (use-package flycheck-plantuml :straight t)
@@ -291,12 +306,29 @@
 
 (use-package forth-mode :straight t)
 
+(use-package yasnippet :straight t)
+(use-package yasnippet-snippets :straight t)
+
+(use-package lsp-mode :straight t)
+(use-package dap-mode :straight t)
+
+(use-package go-mode
+  :straight t
+  :hook ((go-mode . gofmt-before-save)
+         (go-mode . lsp-deferred)
+         (go-mode . (lambda () (setq tab-width 4)))
+         (go-mode . flycheck-mode)
+         (go-mode . yas-minor-mode-on)))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(tool-bar-mode nil))
+ '(menu-bar-mode nil)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil)
+ '(yas-global-mode t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
