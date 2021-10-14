@@ -16,3 +16,6 @@ transient
 var
 .*.desktop*
 history
+.dap-*
+.lsp-session*
+filesets-cache.el
