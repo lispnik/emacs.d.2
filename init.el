@@ -285,7 +285,7 @@
          (go-mode . lsp-deferred)
          (go-mode . (lambda () (setq tab-width 4)))
          (go-mode . flycheck-mode)
-         (go -mode . yas-minor-mode-on)))
+         (go-mode . yas-minor-mode-on)))
 
 (use-package sh-mode
   :hook (sh-mode . yas-minor-mode-on))
