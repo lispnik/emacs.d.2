@@ -20,50 +20,44 @@
     (with-current-buffer
         (url-retrieve-synchronously
          "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
+         'silent
+         'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
 
-;; (use-package almost-mono-themes
-;;  :straight t
-;;  :config (load-theme 'almost-mono-white t))
-
 (use-package bind-key :straight t)
 (use-package delight :straight t)
 
 (use-package ediff
-  :config (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  :straight t)
+  :init (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (use-package fic-mode
   :straight t
-  :config (add-hook 'prog-mode-hook 'fic-mode))
+  :hook (prog-mode . fic-mode))
 
 (use-package flycheck
   :straight t
-  :config
-  (define-key flycheck-mode-map (kbd "M-n") 'flycheck-next-error)
-  (define-key flycheck-mode-map (kbd "M-p") 'flycheck-previous-error))
+  :bind (:map flycheck-mode-map
+              ("M-n" . flycheck-next-error)
+              ("M-p" . flycheck-previous-error)))
 
 (use-package dired
+  :hook (dired-mode . hl-line-mode)
   :config
-  (add-hook 'dired-mode-hook 'hl-line-mode)
-  (add-hook 'dired-mode-hook 'dired-omit-mode)
   (use-package dired-x
     :bind (:map dired-mode-map ("M-o" . dired-omit-mode))
-    :config
-    (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
-    (when (eq system-type 'windows-nt)
-      (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*")))
-  (when (member system-type '(gnu/linux darwin))
-    (use-package dired-atool
-      :straight t
-      :bind (:map dired-mode-map
-                  ("z" . dired-atool-do-unpack)
-                  ("Z" . dired-atool-do-pack)))))
+    :hook (dired-mode . (lambda () (dired-omit-mode 1)))
+    :init (when (eq system-type 'windows-nt)
+            (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*")))
+  (use-package dired-atool
+    :if (memq system-type '(gnu/linux darwin)) 
+    :straight t
+    :bind (:map dired-mode-map
+                ("z" . dired-atool-do-unpack)
+                ("Z" . dired-atool-do-pack))))
 
 (use-package dockerfile-mode :straight t)
 (use-package ag :straight t)
@@ -71,25 +65,22 @@
 
 (use-package ggtags
   :straight t
-  :hook
-  ((c-mode . ggtags-mode)
-   (c++-mode . ggtags-mode)))
+  :hook ((c-mode . ggtags-mode)
+         (c++-mode . ggtags-mode)))
 
 (use-package company
   :straight t
-  :config
-  (setq company-tooltip-align-annotations t)
-  (define-key emacs-lisp-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-  :hook
-  (emacs-lisp-mode . company-mode))
-
-(use-package company-quickhelp
-  :straight t
-  :hook (add-hook 'company-mode-hook 'company-quickhelp-mode))
+  :bind (:map emacs-lisp-mode-map ("TAB" . company-indent-or-complete-common))
+  :hook (emacs-lisp-mode . company-mode)
+  :init (setq company-tooltip-align-annotations t)
+  :config 
+  (use-package company-quickhelp
+    :straight t
+    :hook (company-mode . company-quickhelp-mode)))
 
 (use-package sly
   :straight t
-  :config 
+  :init
   (setq sly-ignore-protocol-mismatches t
         sly-auto-start 'always
         sly-mrepl-pop-sylvester nil)
@@ -112,11 +103,21 @@
           '((ccl ("/usr/local/bin/ccl64"))
             (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))
             (ros ("ros" "run"))))))
-  (add-hook 'sly-mode-hook 'company-mode)
-  (add-hook 'sly-mode-hook 'show-paren-mode)
-  (add-hook 'sly-mrepl-mode-hook 'company-mode)
-  (add-hook 'sly-mrepl-mode-hook 'show-paren-mode)
-  (define-key sly-mode-map (kbd "TAB") 'company-indent-or-complete-common))
+  :hook ((sly-mode . company-mode)
+         (sly-mode . show-paren-mode)
+         (sly-mrepl-mode . company-mode)
+         (sly-mrepl-mode . show-paren-mode))
+  :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common)))
+
+(use-package selectrum
+  :straight t
+  :config
+  (selectrum-mode 1)
+  (use-package selectrum-prescient
+    :straight t
+    :config 
+    (selectrum-prescient-mode 1)
+    (prescient-persist-mode 1)))
 
 (use-package magit
   :straight t
@@ -227,33 +228,6 @@
 
 (use-package lua-mode :straight t)
 
-(defun my-turn-on-org-present ()
-  (org-present-big)
-  (org-display-inline-images))
-
-(defun my-turn-off-org-present ()
-  (org-present-small)
-  (org-remove-inline-images))
-
-(use-package org-present
-  :straight t
-  :config
-  (add-hook 'org-present-mode-hook 'my-turn-off-org-present)
-  (add-hook 'org-present-mode-quit-hook 'my-turn-off-org-present))
-(use-package ob-tangle)
-(use-package ob-clojure
-  :config
-  (setq org-babel-clojure-backend 'cider))
-
-(use-package ob-J)
-
-(use-package epresent :straight t)
-
-(use-package exec-path-from-shell
-  :straight t
-  :if (memq window-system '(mac ns x))
-  :config (exec-path-from-shell-initialize))
-
 (use-package org
   :straight org
   :config
@@ -261,68 +235,46 @@
    'org-babel-load-languages
    '((lisp . t)
      (emacs-lisp . t)
-     (clojure . t)
      (java . t)
-     (J . t)
      (plantuml . t)))
   (add-hook 'org-mode-hook 'visual-line-mode))
+
+(use-package org-present
+  :straight t
+  :config
+  (add-hook 'org-present-mode-hook 'my-turn-off-org-present)
+  (add-hook 'org-present-mode-quit-hook 'my-turn-off-org-present)
+  (defun my-turn-on-org-present ()
+    (org-present-big)
+    (org-display-inline-images))
+  (defun my-turn-off-org-present ()
+    (org-present-small)
+    (org-remove-inline-images))
+  (use-package ob-tangle)
+  (use-package epresent :straight t))
+
+(use-package exec-path-from-shell
+  :straight t
+  :if (memq window-system '(mac ns x))
+  :config (exec-path-from-shell-initialize))
 
 (setq org-babel-lisp-eval-fn 'sly-eval)
 
 (use-package plantuml-mode
   :straight t
-  :config (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar")))
-
-(use-package org-roam
-  :straight t
-  :custom (org-roam-directory (file-truename "~/Roam/"))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
   :config
-  (org-roam-db-autosync-mode)
-  ;; (require 'org-roam-protocol)
-  )
+  (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
+  (use-package flycheck-plantuml :straight t))
 
-;; (use-package ac-geiser :straight t)
-(use-package elvish-mode :straight t)
-(use-package flycheck-plantuml :straight t)
-;; (use-package geiser :straight t)
 (use-package hy-mode :straight t)
-(use-package yaml-mode :straight t)
-
-(use-package selectrum
-  :straight t
-  :config
-  (selectrum-mode 1)
-  (use-package selectrum-prescient
-    :straight t
-    :config 
-    (selectrum-prescient-mode 1)
-    (prescient-persist-mode 1)))
-
 (use-package terraform-mode :straight t)
-
-;; (use-package vterm :straight t)
-;; (use-package julia-snail :straight t
-;;  :requires vterm
-;; :hook (julia-mode . julia-snail-mode))
+(use-package yaml-mode :straight t)
+(use-package forth-mode :straight t)
+(use-package nasm-mode :straight t)
 
 (use-package erlang :straight t)
 (use-package lfe-mode :straight t)
 (use-package elixir-mode :straight t)
-
-(put 'downcase-region 'disabled nil)
-(put 'erase-buffer 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
-
-(use-package forth-mode :straight t)
-(use-package nasm-mode :straight t)
-(use-package paredit :straight t)
 
 (use-package lsp-mode :straight t)
 (use-package dap-mode :straight t)
@@ -333,10 +285,14 @@
          (go-mode . lsp-deferred)
          (go-mode . (lambda () (setq tab-width 4)))
          (go-mode . flycheck-mode)
-         (go-mode . yas-minor-mode-on)))
+         (go -mode . yas-minor-mode-on)))
 
 (use-package sh-mode
   :hook (sh-mode . yas-minor-mode-on))
+
+(put 'downcase-region 'disabled nil)
+(put 'erase-buffer 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
