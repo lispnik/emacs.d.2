@@ -56,7 +56,8 @@
   :hook ((lisp-mode . turn-off-indent-tabs-mode)))
 
 (use-package emacs-mode
-  :hook ((emacs-lisp-mode . turn-off-indent-tabs-mode)))
+  :hook ((emacs-lisp-mode . turn-off-indent-tabs-mode))
+  :bind ("C-c C-c" . eval-defun))
 
 (use-package dired
   :hook (dired-mode . hl-line-mode)
@@ -153,7 +154,10 @@
    (sly-mrepl-mode-hook . enable-paredit-mode)
    (sly-mrepl-mode-hook . (lambda ()
                             (define-key sly-mrepl-mode-map
-                              (read-kbd-macro paredit-backward-delete-key) nil)))))
+                              (read-kbd-macro paredit-backward-delete-key) nil))))
+  :bind ((:map lisp-mode-map
+               ("M-<left>" . paredit-backward-slurp-sexp)
+               ("M-<right>" . paredit-forward-slurp-sexp))))
 
 (use-package anzu
   :straight t
