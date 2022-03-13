@@ -28,20 +28,6 @@
 
 (straight-use-package 'use-package)
 
-;; (use-package modus-themes
-;;   :straight t
-;;   :init
-;;   ;; Add all your customizations prior to loading the themes
-;;   ;; (setq modus-themes-italic-constructs t
-;;   ;;       modus-themes-bold-constructs nil
-;;   ;;       modus-themes-region '(bg-only no-extend))
-;;   ;; Load the theme files before enabling a theme (else you get an error).
-;;   (modus-themes-load-themes)
-;;   :config
-;;   ;; Load the theme of your choice:
-;;   (modus-themes-load-operandi) ;; OR (modus-themes-load-vivendi
-;;   )
-
 (defun turn-off-indent-tabs-mode ()
   (setq indent-tabs-mode nil))
 
@@ -51,6 +37,9 @@
 (use-package yaml-mode :straight t)
 (use-package nasm-mode :straight t)
 (use-package lua-mode :straight t)
+(use-package dockerfile-mode :straight t)
+(use-package ag :straight t)
+(use-package ripgrep :straight t)
 
 (use-package lisp-mode
   :hook ((lisp-mode . turn-off-indent-tabs-mode)))
@@ -136,10 +125,10 @@
   :init (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (use-package projectile
-  :straight t 
-  :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode))
+  :straight t
+  :bind (:map projectile-mode-map
+              ("C-c p" . projectile-command-map))
+  :config (projectile-mode))
 
 (use-package which-key
   :straight t
@@ -161,10 +150,9 @@
 
 (use-package anzu
   :straight t
-  :config
-  (global-anzu-mode 1)
-  (global-set-key [remap query-replace] 'anzu-query-replace)
-  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+  :config (global-anzu-mode 1)
+  :bind (([remap query-replace] . anzu-query-replace)
+         ([remap query-replace-regexp] . anzu-query-replace-regexp))
   :delight)
 
 (use-package editorconfig
@@ -172,21 +160,15 @@
   :config (editorconfig-mode)
   :delight)
 
-;; (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(use-package fic-mode
+  :straight t
+  :hook (prog-mode . fic-mode))
 
-;; (use-package fic-mode
-;;   :straight t
-;;   :hook (prog-mode . fic-mode))
-
-;; (use-package flycheck
-;;   :straight t
-;;   :bind (:map flycheck-mode-map
-;;               ("M-n" . flycheck-next-error)
-;;               ("M-p" . flycheck-previous-error)))
-
-;; (use-package dockerfile-mode :straight t)
-;; (use-package ag :straight t)
-;; (use-package ripgrep :straight t)
+(use-package flycheck
+  :straight t
+  :bind (:map flycheck-mode-map
+              ("M-n" . flycheck-next-error)
+              ("M-p" . flycheck-previous-error)))
 
 ;; (use-package selectrum
 ;;   :straight t
@@ -216,16 +198,19 @@
 ;;   (use-package company-restclient :straight t)
 ;;   (use-package restclient-test :straight t))
 
-;; (use-package org
-;;   :straight org
-;;   :config
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((lisp . t)
-;;      (emacs-lisp . t)
-;;      (java . t)
-;;      (plantuml . t)))
-;;   (add-hook 'org-mode-hook 'visual-line-mode))
+(use-package org
+  :straight org
+  :hook ((org-mode . turn-off-indent-tabs-mode)
+         (org-mode . visual-line-mode))
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((lisp . t)
+     (emacs-lisp . t)
+     (java . t)
+     (plantuml . t)))
+  (setq org-babel-lisp-eval-fn 'sly-eval)
+  :after (sly))
 
 ;; (use-package org-present
 ;;   :straight t
@@ -245,8 +230,6 @@
 ;;   :straight t
 ;;   :if (memq window-system '(mac ns x))
 ;;   :config (exec-path-from-shell-initialize))
-
-;; (setq org-babel-lisp-eval-fn 'sly-eval)
 
 ;; (use-package plantuml-mode
 ;;   :straight t
@@ -295,4 +278,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Monaco" :foundry "nil" :slant normal :weight normal :height 130 :width normal)))))
+ '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 120 :width normal)))))
