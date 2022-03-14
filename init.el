@@ -172,6 +172,8 @@
               ("M-n" . flycheck-next-error)
               ("M-p" . flycheck-previous-error)))
 
+(use-package elpher :straight t)
+
 ;; (use-package selectrum
 ;;   :straight t
 ;;   :config
