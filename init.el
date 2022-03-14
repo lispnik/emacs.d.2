@@ -114,7 +114,9 @@
          (sly-mode . show-paren-mode)
          (sly-mrepl-mode . company-mode)
          (sly-mrepl-mode . show-paren-mode))
-  :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common)))
+  :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common))
+  :config (setq inferior-lisp-program "sbcl"
+                sly-default-lisp 'sbcl))
 
 (use-package ggtags
   :straight t
