@@ -179,7 +179,7 @@
   :straight t
   :init (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory "~/Documents/Roam")
+  (org-roam-directory (expand-file-name "~/Documents/Roam"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert))
@@ -203,12 +203,6 @@
   :bind (:map org-mode-map
               (("s-Y" . org-download-screenshot)
                ("s-y" . org-download-yank))))
-
-
-;; (straight-use-package
-;;   '(nano-emacs :type git :host github :repo "rougier/nano-emacs"))
-
-;; (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
 (use-package flycheck
   :straight t
@@ -249,7 +243,8 @@
 (use-package org
   :straight org
   :hook ((org-mode . turn-off-indent-tabs-mode)
-         (org-mode . visual-line-mode))
+         (org-mode . visual-line-mode)
+         (org-mode . turn-off-indent-tabs-mode))
   :after sly
   :config
   (org-babel-do-load-languages
