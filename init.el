@@ -182,7 +182,10 @@
   (org-roam-directory (expand-file-name "~/Documents/Roam"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert))
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ("C-c n j" . org-roam-dailies-capture-today))
   :config
   (org-roam-setup)
   (org-roam-db-autosync-mode))
@@ -215,12 +218,14 @@
 (use-package selectrum
   :straight t
   :config
-  (selectrum-mode 1)
-  (use-package selectrum-prescient
-    :straight t
-    :config 
-    (selectrum-prescient-mode 1)
-    (prescient-persist-mode 1)))
+  (selectrum-mode 1))
+
+(use-package selectrum-prescient
+  :after selectrum
+  :straight t
+  :config 
+  (selectrum-prescient-mode 1)
+  (prescient-persist-mode 1))
 
 ;; (use-package yasnippet
 ;;   :straight t
@@ -255,12 +260,6 @@
      (plantuml . t)))
   (setq org-babel-lisp-eval-fn 'sly-eval)
   :after (sly))
-
-(use-package org-roam
-  :straight t
-  :custom (org-roam-directory "~/Roam")
-  :config (org-roam-db-autosync-mode)
-  :after (org))
 
 (use-package exec-path-from-shell
   :straight t
