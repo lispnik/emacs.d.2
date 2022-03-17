@@ -1,16 +1,5 @@
 ;;; -*- lexical-binding: t -*-
 
-(setq inhibit-startup-screen t
-      inhibit-startup-echo-area-message (user-login-name)
-      ring-bell-function 'ignore
-      blink-matching-paren nil
-      default-directory "~/"
-      mac-option-modifier 'meta
-      mac-command-modifier 'super)
-
-(desktop-save-mode 1)
-(savehist-mode 1)
-
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -30,6 +19,30 @@
 
 (defun turn-off-indent-tabs-mode ()
   (setq indent-tabs-mode nil))
+
+(use-package emacs
+  :config
+  (setq inhibit-startup-screen t
+        inhibit-startup-echo-area-message (user-login-name)
+        ring-bell-function 'ignore
+        blink-matching-paren nil
+        default-directory "~/"
+        mac-option-modifier 'meta
+        mac-command-modifier 'super)
+  (desktop-save-mode 1)
+  (savehist-mode 1)
+  (show-paren-mode 1))
+
+(use-package modus-themes
+  :straight t
+  :ensure
+  :init
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs nil
+        modus-themes-region '(bg-only no-extend))
+  (modus-themes-load-themes)
+  :config (modus-themes-load-operandi)
+  :bind ("<f5>" . modus-themes-toggle))
 
 (use-package bind-key :straight t)
 (use-package delight :straight t)
@@ -205,15 +218,15 @@
 
 (use-package elpher :straight t)
 
-;; (use-package selectrum
-;;   :straight t
-;;   :config
-;;   (selectrum-mode 1)
-;;   (use-package selectrum-prescient
-;;     :straight t
-;;     :config 
-;;     (selectrum-prescient-mode 1)
-;;     (prescient-persist-mode 1)))
+(use-package selectrum
+  :straight t
+  :config
+  (selectrum-mode 1)
+  (use-package selectrum-prescient
+    :straight t
+    :config 
+    (selectrum-prescient-mode 1)
+    (prescient-persist-mode 1)))
 
 ;; (use-package yasnippet
 ;;   :straight t
@@ -255,6 +268,7 @@
   :after (org))
 
 (use-package exec-path-from-shell
+  :straight t
   :if (memq window-system '(mac ns))
   :ensure t
   :config (exec-path-from-shell-initialize))
@@ -313,7 +327,6 @@
    '((nasm-basic-offset . 2)
      (nasm-basic-offset . 4)
      (project-vc-merge-submodules)))
- '(show-paren-mode t)
  '(tool-bar-style 'image))
 
 (custom-set-faces
@@ -321,4 +334,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 120 :width normal)))))
+ '(default ((t (:family "Monaco" :foundry "outline" :slant normal :weight normal :height 140 :width normal)))))
