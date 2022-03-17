@@ -162,9 +162,40 @@
   :config (editorconfig-mode)
   :delight)
 
-(use-package fic-mode
+(use-package org-roam
   :straight t
-  :hook (prog-mode . fic-mode))
+  :init (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/Documents/Roam")
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+  :config
+  (org-roam-setup)
+  (org-roam-db-autosync-mode))
+
+(use-package deft
+  :straight t
+  :after (org org-roam)
+  :bind ("C-c n d" . deft)
+  :custom
+  (deft-recursive t)
+  (deft-use-filter-string-for-filename t)
+  (deft-default-extension "org")
+  (deft-directory org-roam-directory))
+
+(use-package org-download
+  :straight t
+  :after org
+  :bind (:map org-mode-map
+              (("s-Y" . org-download-screenshot)
+               ("s-y" . org-download-yank))))
+
+
+;; (straight-use-package
+;;   '(nano-emacs :type git :host github :repo "rougier/nano-emacs"))
+
+;; (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
 (use-package flycheck
   :straight t
@@ -206,6 +237,7 @@
   :straight org
   :hook ((org-mode . turn-off-indent-tabs-mode)
          (org-mode . visual-line-mode))
+  :after sly
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
