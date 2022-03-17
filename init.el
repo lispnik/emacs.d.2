@@ -216,6 +216,17 @@
   (setq org-babel-lisp-eval-fn 'sly-eval)
   :after (sly))
 
+(use-package org-roam
+  :straight t
+  :custom (org-roam-directory "~/Roam")
+  :config (org-roam-db-autosync-mode)
+  :after (org))
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :ensure t
+  :config (exec-path-from-shell-initialize))
+
 ;; (use-package org-present
 ;;   :straight t
 ;;   :config
@@ -230,11 +241,6 @@
 ;;   (use-package ob-tangle)
 ;;   (use-package epresent :straight t))
 
-;; (use-package exec-path-from-shell
-;;   :straight t
-;;   :if (memq window-system '(mac ns x))
-;;   :config (exec-path-from-shell-initialize))
-
 ;; (use-package plantuml-mode
 ;;   :straight t
 ;;   :config
@@ -247,6 +253,7 @@
 ;; (use-package erlang :straight t)
 ;; (use-package lfe-mode :straight t)
 ;; (use-package elixir-mode :straight t)
+
 ;; (use-package lsp-mode :straight t)
 ;; (use-package dap-mode :straight t)
 
