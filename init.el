@@ -54,6 +54,10 @@
 (use-package ag :straight t)
 (use-package ripgrep :straight t)
 
+(use-package vterm
+  :custom (vterm-always-compile-module t)
+  :straight t)
+
 (use-package lisp-mode
   :hook ((lisp-mode . turn-off-indent-tabs-mode)))
 
