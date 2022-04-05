@@ -160,8 +160,8 @@
   :hook
   ((emacs-lisp-mode . enable-paredit-mode)
    (lisp-mode . enable-paredit-mode)
-   (sly-mrepl-mode-hook . enable-paredit-mode)
-   (sly-mrepl-mode-hook . (lambda ()
+   (sly-mrepl-mode . enable-paredit-mode)
+   (sly-mrepl-mode . (lambda ()
                             (define-key sly-mrepl-mode-map
                               (read-kbd-macro paredit-backward-delete-key) nil))))
   :bind ((:map lisp-mode-map
