@@ -48,6 +48,7 @@
 (use-package delight :straight t)
 
 (use-package yaml-mode :straight t)
+(use-package markdown-mode :straight t)
 (use-package nasm-mode :straight t)
 (use-package lua-mode :straight t)
 (use-package dockerfile-mode :straight t)
