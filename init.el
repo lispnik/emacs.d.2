@@ -21,14 +21,16 @@
   (setq indent-tabs-mode nil))
 
 (use-package emacs
+  :custom ((desktop-load-locked-desktop t)
+           (mac-option-modifier 'meta)
+           (mac-command-modifier 'super)
+           (vc-follow-symlinks t)
+           (default-directory "~/")
+           (blink-matching-paren nil)
+           (ring-bell-function 'ignore)
+           (inhibit-startup-screen t)
+           (inhibit-startup-echo-area-message (user-login-name)))
   :config
-  (setq inhibit-startup-screen t
-        inhibit-startup-echo-area-message (user-login-name)
-        ring-bell-function 'ignore
-        blink-matching-paren nil
-        default-directory "~/"
-        mac-option-modifier 'meta
-        mac-command-modifier 'super)
   (desktop-save-mode 1)
   (savehist-mode 1)
   (show-paren-mode 1))
