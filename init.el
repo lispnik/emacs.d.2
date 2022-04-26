@@ -29,7 +29,9 @@
            (blink-matching-paren nil)
            (ring-bell-function 'ignore)
            (inhibit-startup-screen t)
-           (inhibit-startup-echo-area-message (user-login-name)))
+           (inhibit-startup-echo-area-message (user-login-name))
+           (tab-bar-mode t)
+           (global-display-line-numbers-mode t))
   :config
   (desktop-save-mode 1)
   (savehist-mode 1)
