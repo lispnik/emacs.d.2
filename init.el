@@ -22,6 +22,9 @@
 
 (use-package emacs
   :custom ((desktop-load-locked-desktop t)
+           (desktop-save-mode t)
+           (savehist-mode t)
+           (show-paren-mode t)
            (mac-option-modifier 'meta)
            (mac-command-modifier 'super)
            (vc-follow-symlinks t)
@@ -31,21 +34,18 @@
            (inhibit-startup-screen t)
            (inhibit-startup-echo-area-message (user-login-name))
            (tab-bar-mode t)
-           (global-display-line-numbers-mode t))
-  :config
-  (desktop-save-mode 1)
-  (savehist-mode 1)
-  (show-paren-mode 1))
+           (tool-bar-style 'image)
+           (global-display-line-numbers-mode t)))
 
 (use-package modus-themes
   :straight t
-  :ensure
   :init
-  (setq modus-themes-italic-constructs t
-        modus-themes-bold-constructs nil
-        modus-themes-region '(bg-only no-extend))
   (modus-themes-load-themes)
   :config (modus-themes-load-operandi)
+  :custom ((modus-themes-italic-constructs nil)
+           (modus-themes-slanted-constructs nil)
+           (modus-themes-bold-constructs nil)
+           ())
   :bind ("<f5>" . modus-themes-toggle))
 
 (use-package bind-key :straight t)
@@ -331,8 +331,7 @@
  '(safe-local-variable-values
    '((nasm-basic-offset . 2)
      (nasm-basic-offset . 4)
-     (project-vc-merge-submodules)))
- '(tool-bar-style 'image))
+     (project-vc-merge-submodules))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
