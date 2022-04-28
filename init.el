@@ -222,7 +222,17 @@
   :straight t
   :bind (:map flycheck-mode-map
               ("M-n" . flycheck-next-error)
-              ("M-p" . flycheck-previous-error)))
+              ("M-p" . flycheck-previous-error))
+  :config
+  (global-flycheck-mode)
+  (flycheck-define-checker sh-shellcheck
+    "A shell script syntax and style checker using Shellcheck.
+
+See URL `https://github.com/koalaman/shellcheck/'."
+  :command ("shellcheck" "-f" "checkstyle" "-s" (eval (symbol-name sh-shell)) source)
+  :modes sh-mode
+  :error-parser flycheck-parse-checkstyle))
+
 
 (use-package elpher :straight t)
 
