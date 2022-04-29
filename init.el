@@ -44,8 +44,7 @@
   :config (modus-themes-load-operandi)
   :custom ((modus-themes-italic-constructs nil)
            (modus-themes-slanted-constructs nil)
-           (modus-themes-bold-constructs nil)
-           ())
+           (modus-themes-bold-constructs nil))
   :bind ("<f5>" . modus-themes-toggle))
 
 (use-package bind-key :straight t)
