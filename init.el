@@ -33,9 +33,7 @@
            (ring-bell-function 'ignore)
            (inhibit-startup-screen t)
            (inhibit-startup-echo-area-message (user-login-name))
-           (tab-bar-mode t)
-           (tool-bar-style 'image)
-           (global-display-line-numbers-mode t)))
+           (tool-bar-style 'image)))
 
 (use-package modus-themes
   :straight t
