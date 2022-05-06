@@ -45,7 +45,7 @@
   :custom ((modus-themes-italic-constructs nil)
            (modus-themes-slanted-constructs nil)
            (modus-themes-bold-constructs nil))
-  :bind ("<f5>" . modus-themes-toggle))
+  :bind (("<f5>" . modus-themes-toggle)))
 
 (use-package bind-key :straight t)
 (use-package delight :straight t)
@@ -109,35 +109,23 @@
     :straight t
     :hook (company-mode . company-quickhelp-mode)))
 
-(use-package sly
+(use-package slime-company
   :straight t
-  :init
-  (setq sly-ignore-protocol-mismatches t
-        sly-auto-start 'always
-        sly-mrepl-pop-sylvester nil)
-  (cond
-   ((eq system-type 'windows-nt)
-    ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
-    ;; start from Sly
-    (setq sly-lisp-implementations
-          '((ccl ("cmd" "/c" "wx86cl64"))
-	    (sbcl ("cmd" "/c" "sbcl.exe" "--dynamic-space-size" "2048")))))
-   ((eq system-type 'gnu/linux)
-    (setq sly-lisp-implementations
-          '((ccl ("lx86cl64"))
-            (sbcl ("sbcl" "--dynamic-space-size" "2048"))
-            (ecl ("ecl")))))
-   ((eq system-type 'darwin)
-    (setq sly-lisp-implementations
-          '((ccl ("/usr/local/bin/ccl64"))
-            (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))))))
-  :hook ((sly-mode . company-mode)
-         (sly-mode . show-paren-mode)
-         (sly-mrepl-mode . company-mode)
-         (sly-mrepl-mode . show-paren-mode))
-  :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common))
-  :config (setq inferior-lisp-program "sbcl"
-                sly-default-lisp 'sbcl))
+  :after (slime company)
+  :config (setq slime-company-completion 'fuzzy
+                slime-company-after-completion 'slime-company-just-one-space))
+
+(use-package slime
+  :straight t
+  :after (paredit)
+  :hook ((slime-repl-mode . enable-paredit-mode)
+         (slime-mode . enable-paredit-mode))
+  :bind (:map slime-repl-mode-map
+              ("TAB" . company-indent-or-complete-common)
+              ("DEL" . paredit-backward-delete))
+  :config
+  (setq inferior-lisp-program "sbcl")
+  (slime-setup '(slime-fancy slime-company)))
 
 (use-package ggtags
   :straight t
@@ -231,7 +219,6 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :command ("shellcheck" "-f" "checkstyle" "-s" (eval (symbol-name sh-shell)) source)
   :modes sh-mode
   :error-parser flycheck-parse-checkstyle))
-
 
 (use-package elpher :straight t)
 
@@ -348,3 +335,33 @@ See URL `https://github.com/koalaman/shellcheck/'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Monaco" :foundry "outline" :slant normal :weight normal :height 140 :width normal)))))
+
+;; (use-package sly
+;;   :straight t
+;;   :init
+;;   (setq sly-ignore-protocol-mismatches t
+;;         sly-auto-start 'always
+;;         sly-mrepl-pop-sylvester nil)
+;;   (cond
+;;    ((eq system-type 'windows-nt)
+;;     ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
+;;     ;; start from Sly
+;;     (setq sly-lisp-implementations
+;;           '((ccl ("cmd" "/c" "wx86cl64"))
+;; 	    (sbcl ("cmd" "/c" "sbcl.exe" "--dynamic-space-size" "2048")))))
+;;    ((eq system-type 'gnu/linux)
+;;     (setq sly-lisp-implementations
+;;           '((ccl ("lx86cl64"))
+;;             (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+;;             (ecl ("ecl")))))
+;;    ((eq system-type 'darwin)
+;;     (setq sly-lisp-implementations
+;;           '((ccl ("/usr/local/bin/ccl64"))
+;;             (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))))))
+;;   :hook ((sly-mode . company-mode)
+;;          (sly-mode . show-paren-mode)
+;;          (sly-mrepl-mode . company-mode)
+;;          (sly-mrepl-mode . show-paren-mode))
+;;   :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common))
+;;   :config (setq inferior-lisp-program "sbcl"
+;;                 sly-default-lisp 'sbcl))
