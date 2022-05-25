@@ -268,7 +268,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
 (use-package exec-path-from-shell
   :straight t
-  :if (memq window-system '(mac ns))
+  :if (or (memq window-system '(mac ns))
+          (memq system-type '(gnu/linux)))
   :ensure t
   :config (exec-path-from-shell-initialize))
 
