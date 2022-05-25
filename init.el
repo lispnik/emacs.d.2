@@ -125,6 +125,30 @@
   (setq inferior-lisp-program "sbcl")
   (slime-setup '(slime-fancy slime-company)))
 
+(use-package plisp-mode
+  :straight t
+  :mode ("\\.l\\'" . plisp-mode)
+  :custom
+  (plisp-disable-slime-p t)
+  (plisp-documentation-directory "~/Projects/pil21/doc"))
+
+;;; https://www.reddit.com/r/emacs/comments/km3klo/comment/gmionkm/?utm_source=share&utm_medium=web2x&context=3
+(use-package geiser
+  :ensure t
+  :defer t
+  :defines geiser-guile-binary
+  :functions geiser-impl--set-buffer-implementation
+  :commands (geiser run-geiser)
+  :config
+  ;; Send the argument of `run-geiser' to
+  ;; `geiser-impl--set-buffer-implementation' BEFORE `run-geiser' is
+  ;; ran. As I had to set the Scheme implementation by hand otherwise
+  ;; with `geiser-set-scheme'
+  ;; (setq geiser-guile-binary "/usr/bin/guile3") ; Use the latest guile
+  (advice-add 'run-geiser :before #'geiser-impl--set-buffer-implementation)) 
+
+(use-package geiser-racket :straight t)
+
 (use-package ggtags
   :straight t
   :hook ((c-mode . ggtags-mode)
