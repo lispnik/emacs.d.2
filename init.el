@@ -350,14 +350,13 @@ See URL `https://github.com/koalaman/shellcheck/'."
  '(safe-local-variable-values
    '((nasm-basic-offset . 2)
      (nasm-basic-offset . 4)
-     (project-vc-merge-submodules))))
+     (project-vc-merge-submodules)))
+ '(tool-bar-mode nil))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Monaco" :foundry "outline" :slant normal :weight normal :height 140 :width normal)))))
+
+(load (setq custom-file
+            (format "~/.emacs.d/%s-custom.el"
+                    (string-replace "/" "" (symbol-name system-type)))))
 
 ;; (use-package sly
 ;;   :straight t
