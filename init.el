@@ -297,6 +297,14 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :ensure t
   :config (exec-path-from-shell-initialize))
 
+(use-package zig-mode
+  :straight t)
+
+;; (use-package eglot
+;;   :straight t
+;;   :after zig-mode
+;;   :config (add-hook 'zig-mode-hook 'eglot-ensure))
+
 ;; (use-package org-present
 ;;   :straight t
 ;;   :config
@@ -324,8 +332,12 @@ See URL `https://github.com/koalaman/shellcheck/'."
 ;; (use-package lfe-mode :straight t)
 ;; (use-package elixir-mode :straight t)
 
+
+;; (use-package f-shortdoc :straight t)
 ;; (use-package lsp-mode :straight t)
 ;; (use-package dap-mode :straight t)
+
+(use-package elvish-mode :straight t)
 
 ;; (use-package go-mode
 ;;   :straight t
