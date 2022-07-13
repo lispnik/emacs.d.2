@@ -256,13 +256,14 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (selectrum-prescient-mode 1)
   (prescient-persist-mode 1))
 
-;; (use-package yasnippet
-;;   :straight t
-;;   :hook ((emacs-lisp-mode . yas-minor-mode-on)
-;;          (lisp-mode . yas-minor-mode-on)
-;;          (lisp-interaction-mode . yas-minor-mode-on)
-;;          (c-mode . yas-minor-mode-on)
-;;          (c++-mode . yas-minor-mode-on)))
+(use-package yasnippet
+  :straight t
+  :commands (yas-minor-mode-on)
+  :hook ((emacs-lisp-mode . yas-minor-mode-on)
+         (lisp-mode . yas-minor-mode-on)
+         (lisp-interaction-mode . yas-minor-mode-on)
+         (c-mode . yas-minor-mode-on)
+         (c++-mode . yas-minor-mode-on)))
 
 ;; (use-package highlight-symbol
 ;;   :straight t
@@ -300,10 +301,18 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (use-package zig-mode
   :straight t)
 
-;; (use-package eglot
-;;   :straight t
-;;   :after zig-mode
-;;   :config (add-hook 'zig-mode-hook 'eglot-ensure))
+(use-package lsp-mode
+  :straight t
+  :commands (lsp lsp-deferred)
+  :init (setq lsp-keymap-prefix  "C-c l")
+  :config  (setq lsp-enable-which-key-integration t)
+  :hook ((go-mode) . lisp))
+
+(use-package lsp-ui
+  :straight t
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-doc-enable t))
 
 ;; (use-package org-present
 ;;   :straight t
@@ -339,13 +348,13 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
 (use-package elvish-mode :straight t)
 
-;; (use-package go-mode
-;;   :straight t
-;;   :hook ((go-mode . gofmt-before-save)
-;;          (go-mode . lsp-deferred)
-;;          (go-mode . (lambda () (setq tab-width 4)))
-;;          (go-mode . flycheck-mode)
-;;          (go-mode . yas-minor-mode-on)))
+(use-package go-mode
+  :straight t
+  :hook ((go-mode . gofmt-before-save)
+         (go-mode . lsp-deferred)
+         (go-mode . (lambda () (setq tab-width 4)))
+         (go-mode . flycheck-mode)
+         (go-mode . yas-minor-mode-on)))
 
 ;; (use-package sh-mode
 ;;   :hook (sh-mode . yas-minor-mode-on))
