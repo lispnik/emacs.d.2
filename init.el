@@ -363,6 +363,10 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 
+(use-package xonsh-mode
+  :straight t
+  :mode ("\\.xsh\\'" "\\.xonshrc\\'" "xonshrc"))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
