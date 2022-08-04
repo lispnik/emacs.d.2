@@ -1,2 +1,5 @@
+alias ms magit-status $1
+alias edd ediff-directories $1 $2
+alias edf ediff-files $1 $2
 alias ff find-file $1
 alias de dired $1
