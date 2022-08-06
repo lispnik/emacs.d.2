@@ -107,23 +107,53 @@
     :straight t
     :hook (company-mode . company-quickhelp-mode)))
 
-(use-package slime-company
+(use-package sly
   :straight t
-  :after (slime company)
-  :config (setq slime-company-completion 'fuzzy
-                slime-company-after-completion 'slime-company-just-one-space))
+  :init
+  (setq sly-ignore-protocol-mismatches t
+        sly-auto-start 'always
+        sly-mrepl-pop-sylvester nil)
+  (cond
+   ((eq system-type 'windows-nt)
+    ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
+    ;; start from Sly
+    (setq sly-lisp-implementations
+          '((ccl ("cmd" "/c" "wx86cl64"))
+	    (sbcl ("cmd" "/c" "sbcl.exe" "--dynamic-space-size" "2048")))))
+   ((eq system-type 'gnu/linux)
+    (setq sly-lisp-implementations
+          '((ccl ("lx86cl64"))
+            (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+            (ecl ("ecl")))))
+   ((eq system-type 'darwin)
+    (setq sly-lisp-implementations
+          '((ccl ("/usr/local/bin/ccl64"))
+            (sbcl ("~/.local/bin/sbcl" "--dynamic-space-size" "2048"))))))
+  :hook ((sly-mode . company-mode)
+         (sly-mode . show-paren-mode)
+         (sly-mrepl-mode . company-mode)
+         (sly-mrepl-mode . show-paren-mode))
+  :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common))
+  :config (setq inferior-lisp-program "sbcl"
+                sly-default-lisp 'sbcl))
 
-(use-package slime
-  :straight t
-  :after (paredit)
-  :hook ((slime-repl-mode . enable-paredit-mode)
-         (slime-mode . enable-paredit-mode))
-  :bind (:map slime-repl-mode-map
-              ("TAB" . company-indent-or-complete-common)
-              ("DEL" . paredit-backward-delete))
-  :config
-  (setq inferior-lisp-program "sbcl")
-  (slime-setup '(slime-fancy slime-company)))
+;; (use-package slime-company
+;;   :straight t
+;;   :after (slime company)
+;;   :config (setq slime-company-completion 'fuzzy
+;;                 slime-company-after-completion 'slime-company-just-one-space))
+
+;; (use-package slime
+;;   :straight t
+;;   :after (paredit)
+;;   :hook ((slime-repl-mode . enable-paredit-mode)
+;;          (slime-mode . enable-paredit-mode))
+;;   :bind (:map slime-repl-mode-map
+;;               ("TAB" . company-indent-or-complete-common)
+;;               ("DEL" . paredit-backward-delete))
+;;   :config
+;;   (setq inferior-lisp-program "sbcl")
+;;   (slime-setup '(slime-fancy slime-company)))
 
 (use-package plisp-mode
   :straight t
@@ -314,6 +344,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :config
   (setq lsp-ui-doc-enable t))
 
+(use-package nim-mode :straight t)
+
 ;; (use-package org-present
 ;;   :straight t
 ;;   :config
@@ -372,43 +404,25 @@ See URL `https://github.com/koalaman/shellcheck/'."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(menu-bar-mode nil)
  '(safe-local-variable-values
-   '((nasm-basic-offset . 2)
+   '((Package . BORDEAUX-THREADS)
+     (Syntax . ANSI-Common-lisp)
+     (Package . POSTMODERN)
+     (Package . S-SQL)
+     (Syntax . ANSI-Common-Lisp)
+     (Package . CL-POSTGRES)
+     (Base . 10)
+     (Syntax . Ansi-Common-Lisp)
+     (checkdoc-minor-mode . t)
+     (indent-tabs)
+     (nasm-basic-offset . 2)
      (nasm-basic-offset . 4)
      (project-vc-merge-submodules)))
+ '(tool-bar-mode nil)
+ '(warning-suppress-log-types '((comp)))
  '(tool-bar-mode nil))
-
 
 (load (setq custom-file
             (format "~/.emacs.d/%s-custom.el"
                     (string-replace "/" "" (symbol-name system-type)))))
-
-;; (use-package sly
-;;   :straight t
-;;   :init
-;;   (setq sly-ignore-protocol-mismatches t
-;;         sly-auto-start 'always
-;;         sly-mrepl-pop-sylvester nil)
-;;   (cond
-;;    ((eq system-type 'windows-nt)
-;;     ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
-;;     ;; start from Sly
-;;     (setq sly-lisp-implementations
-;;           '((ccl ("cmd" "/c" "wx86cl64"))
-;; 	    (sbcl ("cmd" "/c" "sbcl.exe" "--dynamic-space-size" "2048")))))
-;;    ((eq system-type 'gnu/linux)
-;;     (setq sly-lisp-implementations
-;;           '((ccl ("lx86cl64"))
-;;             (sbcl ("sbcl" "--dynamic-space-size" "2048"))
-;;             (ecl ("ecl")))))
-;;    ((eq system-type 'darwin)
-;;     (setq sly-lisp-implementations
-;;           '((ccl ("/usr/local/bin/ccl64"))
-;;             (sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))))))
-;;   :hook ((sly-mode . company-mode)
-;;          (sly-mode . show-paren-mode)
-;;          (sly-mrepl-mode . company-mode)
-;;          (sly-mrepl-mode . show-paren-mode))
-;;   :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common))
-;;   :config (setq inferior-lisp-program "sbcl"
-;;                 sly-default-lisp 'sbcl))
