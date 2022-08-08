@@ -1,0 +1,29 @@
+
+addpath -b '$HOME/.local/bin' >/dev/null
+addpath -b '$HOME/.asdf/bin' >/dev/null
+addpath -b '$HOME/.asdf/shims' >/dev/null
+addpath -b '$HOME/.roswell/bin' >/dev/null
+addpath -b '$HOME/.cache/rebar3/bin' >/dev/null
+addpath -b '$HOME/.cargo/bin' >/dev/null
+addpath -b '$HOME/.pyenv/bin' >/dev/null
+addpath -b '$HOME/Library/Python/3.7/bin' >/dev/null
+addpath -b '/usr/local/sbin' >/dev/null
+addpath -b '/usr/local/bin' >/dev/null
+addpath -b '/usr/local/opt/node@12/bin' >/dev/null
+addpath -b '/usr/local/opt/gnu-tar/libexec/gnubin' >/dev/null
+addpath -b '/usr/local/opt/coreutils/libexec/gnubin' >/dev/null
+addpath -b '/usr/local/opt/findutils/libexec/gnubin' >/dev/null
+addpath -b '/usr/local/opt/ruby/bin' >/dev/null
+addpath -b '/usr/local/opt/tcl-tk/bin' >/dev/null
+
+
+# for f in web1 web2 { scp info.php $f:/var/www/html/oscmax/catalog }
+# for f in {ls -1d *} {echo $f; svn up $f}
+# for f in {find . -name '*.java'} {mv $f (replace-regexp-in-string "\\.java$" ".scala" f)}
+# # Those parens may also be curly braces. Paren for lisp, curly for subshell.
+# # See how $f is used in curly brace but f is used in parens
+# for f in db1 db2 {mysqldump -d -uuser -ppwd (concat "prefix_" f "_suffix") >(concat "/tmp/backup_" f ".sql")}
+
+# make an alias/function that intercepts "asdf export-shell-version elvish"
+# for line in { asdf export-shell-version elvish zig latest } {
+# }
