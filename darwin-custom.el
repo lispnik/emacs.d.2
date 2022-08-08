@@ -5,7 +5,11 @@
  ;; If there is more than one, they won't work right.
  '(menu-bar-mode nil)
  '(safe-local-variable-values
-   '((Package . CLAWK-TEST)
+   '((Package . BORDEAUX-THREADS)
+     (Syntax . ANSI-Common-lisp)
+     (Syntax . ANSI-Common-Lisp)
+     (encoding . utf-8)
+     (Package . CLAWK-TEST)
      (Base . 10)
      (Package . CLAWK)
      (Syntax . COMMON-LISP)

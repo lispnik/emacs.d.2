@@ -399,6 +399,15 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :straight t
   :mode ("\\.xsh\\'" "\\.xonshrc\\'" "xonshrc"))
 
+;; (use-package em-smart
+;;   :after eshell
+;;   :config
+;;   (setq eshell-where-to-jump 'begin)
+;;   (setq eshell-review-quick-commands nil)
+;;   (setq eshell-smart-space-goes-to-end t))
+
+(use-package eshell)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
