@@ -77,7 +77,7 @@
             (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*")))
 
   (use-package dired-atool
-    :if (memq system-type '(gnu/linux darwin)) 
+    :if (memq system-type '(gnu/linux darwin))
     :straight t
     :bind (:map dired-mode-map
                 ("z" . dired-atool-do-unpack)
@@ -93,7 +93,7 @@
   :straight t
   :bind (("C-x g" . magit-status))
   :config
-  ;; from https://github.com/dgutov/diff-hl 
+  ;; from https://github.com/dgutov/diff-hl
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
@@ -102,7 +102,7 @@
   :bind (:map emacs-lisp-mode-map ("TAB" . company-indent-or-complete-common))
   :hook (emacs-lisp-mode . company-mode)
   :init (setq company-tooltip-align-annotations t)
-  :config 
+  :config
   (use-package company-quickhelp
     :straight t
     :hook (company-mode . company-quickhelp-mode)))
@@ -119,7 +119,7 @@
     ;; start from Sly
     (setq sly-lisp-implementations
           '((ccl ("cmd" "/c" "wx86cl64"))
-	    (sbcl ("cmd" "/c" "sbcl.exe" "--dynamic-space-size" "2048")))))
+            (sbcl ("cmd" "/c" "sbcl.exe" "--dynamic-space-size" "2048")))))
    ((eq system-type 'gnu/linux)
     (setq sly-lisp-implementations
           '((ccl ("lx86cl64"))
@@ -175,7 +175,7 @@
   ;; ran. As I had to set the Scheme implementation by hand otherwise
   ;; with `geiser-set-scheme'
   ;; (setq geiser-guile-binary "/usr/bin/guile3") ; Use the latest guile
-  (advice-add 'run-geiser :before #'geiser-impl--set-buffer-implementation)) 
+  (advice-add 'run-geiser :before #'geiser-impl--set-buffer-implementation))
 
 (use-package geiser-racket :straight t)
 
@@ -282,7 +282,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (use-package selectrum-prescient
   :after selectrum
   :straight t
-  :config 
+  :config
   (selectrum-prescient-mode 1)
   (prescient-persist-mode 1))
 
