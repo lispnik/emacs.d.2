@@ -97,6 +97,8 @@
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
+(use-package docker :straight t)
+
 (use-package company
   :straight t
   :bind (:map emacs-lisp-mode-map ("TAB" . company-indent-or-complete-common))
