@@ -19,3 +19,4 @@ history
 .lsp-session*
 filesets-cache.el
 /eln-cache/
+places

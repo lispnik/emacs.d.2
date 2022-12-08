@@ -1,3 +1,4 @@
+(setq package-enable-at-startup nil)
 ;; To set the garbage collection threshold to high (100 MB) since LSP client-server communication generates a lot of output/garbage
 (setq gc-cons-threshold 100000000)
 ;; To increase the amount of data Emacs reads from a process
