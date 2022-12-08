@@ -185,40 +185,6 @@
   :config (editorconfig-mode)
   :delight)
 
-;; (use-package org-roam
-;;   :straight t
-;;   :init (setq org-roam-v2-ack t)
-;;   :custom
-;;   (org-roam-directory (expand-file-name "~/Documents/Roam"))
-;;   :bind (("C-c n l" . org-roam-buffer-toggle)
-;;          ("C-c n f" . org-roam-node-find)
-;;          ("C-c n g" . org-roam-graph)
-;;          ("C-c n i" . org-roam-node-insert)
-;;          ("C-c n c" . org-roam-capture)
-;;          ("C-c n j" . org-roam-dailies-capture-today)
-;;          :map org-mode-map
-;;          ("C-M-i" . completion-at-point))
-;;   :config
-;;   (org-roam-setup)
-;;   (org-roam-db-autosync-mode))
-
-;; (use-package deft
-;;   :straight t
-;;   :after (org org-roam)
-;;   :bind ("C-c n d" . deft)
-;;   :custom
-;;   (deft-recursive t)
-;;   (deft-use-filter-string-for-filename t)
-;;   (deft-default-extension "org")
-;;   (deft-directory org-roam-directory))
-
-;; (use-package org-download
-;;   :straight t
-;;   :after org
-;;   :bind (:map org-mode-map
-;;               (("s-Y" . org-download-screenshot)
-;;                ("s-y" . org-download-yank))))
-
 ;; (use-package flycheck
 ;;   :straight t
 ;;   :bind (:map flycheck-mode-map
@@ -253,22 +219,6 @@
 ;; ;;   (use-package company-restclient :straight t)
 ;; ;;   (use-package restclient-test :straight t))
 
-;; (use-package org
-;;   :straight org
-;;   :hook ((org-mode . turn-off-indent-tabs-mode)
-;;          (org-mode . visual-line-mode)
-;;          (org-mode . turn-off-indent-tabs-mode))
-;;   :after sly
-;;   :config
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((lisp . t)
-;;      (emacs-lisp . t)
-;;      (java . t)
-;;      (plantuml . t)))
-;;   (setq org-babel-lisp-eval-fn 'sly-eval)
-;;   :after (sly))
-
 (use-package exec-path-from-shell
   :straight t
   :if (or (memq window-system '(mac ns))
@@ -295,46 +245,11 @@
   :hook ((c-mode c++-mode objc-mode cuda-mode) .
          (lambda () (require 'ccls) (lsp))))
 
-;; ;; (use-package org-present
-;; ;;   :straight t
-;; ;;   :config
-;; ;;   (add-hook 'org-present-mode-hook 'my-turn-off-org-present)
-;; ;;   (add-hook 'org-present-mode-quit-hook 'my-turn-off-org-present)
-;; ;;   (defun my-turn-on-org-present ()
-;; ;;     (org-present-big)
-;; ;;     (org-display-inline-images))
-;; ;;   (defun my-turn-off-org-present ()
-;; ;;     (org-present-small)
-;; ;;     (org-remove-inline-images))
-;; ;;   (use-package ob-tangle)
-;; ;;   (use-package epresent :straight t))
-
 ;; ;; (use-package plantuml-mode
 ;; ;;   :straight t
 ;; ;;   :config
 ;; ;;   (setq plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
 ;; ;;   (use-package flycheck-plantuml :straight t))
-
-;; (use-package ag :straight t)
-;; (use-package aggressive-indent :straight t)
-;; (use-package dap-mode :straight t)
-;; (use-package dockerfile-mode :straight t)
-;; (use-package elixir-mode :straight t)
-;; (use-package elpher :straight t)
-;; (use-package elvish-mode :straight t)
-;; (use-package erlang :straight t)
-;; (use-package f-shortdoc :straight t)
-;; (use-package forth-mode :straight t)
-;; (use-package hy-mode :straight t)
-;; (use-package lfe-mode :straight t)
-;; (use-package lua-mode :straight t)
-;; (use-package markdown-mode :straight t)
-;; (use-package nasm-mode :straight t)
-;; (use-package nim-mode :straight t)
-;; (use-package ripgrep :straight t)
-;; (use-package terraform-mode :straight t)
-;; (use-package yaml-mode :straight t)
-;; (use-package zig-mode :straight t)
 
 ;; (use-package go-mode
 ;;   :straight t
@@ -391,6 +306,8 @@
 ;; (defun turn-off-indent-tabs-mode ()
 ;;   (setq indent-tabs-mode nil))
 
+
+(load "~/.emacs.d/init-org.el")
 
 (load (setq custom-file
             (format "~/.emacs.d/%s-custom.el"
