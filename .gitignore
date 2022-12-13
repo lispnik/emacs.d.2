@@ -20,3 +20,9 @@ history
 filesets-cache.el
 /eln-cache/
 places
+.DS_Store
+.apl.history
+.org-id-locations
+bookmarks
+eshell/lastdir
+org-roam.db

@@ -46,6 +46,15 @@
            (modus-themes-bold-constructs nil))
   :bind (("<f5>" . modus-themes-toggle)))
 
+(use-package flycheck
+  :straight t
+  :bind (:map flycheck-mode-map
+              ("M-n" . flycheck-next-error)
+              ("M-p" . flycheck-previous-error))
+  :config
+  (global-flycheck-mode))
+
+
 ;; (use-package vterm
 ;;   :custom (vterm-always-compile-module t)
 ;;   :straight t)
@@ -82,8 +91,6 @@
   ;; from https://github.com/dgutov/diff-hl
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
-
-(use-package docker :straight t)
 
 (use-package company
   :straight t
@@ -134,12 +141,13 @@
 
 (use-package platformio-mode :straight t)
 
-;; (use-package plisp-mode
-;;   :straight t
-;;   :mode ("\\.l\\'" . plisp-mode)
-;;   :custom
-;;   (plisp-disable-slime-p t)
-;;   (plisp-documentation-directory "~/Projects/pil21/doc"))
+(use-package plisp-mode
+  :straight t
+  :mode ("\\.l\\'" . plisp-mode)
+  :custom
+  (plisp-disable-slime-p t)
+  (plisp-)
+  (plisp-documentation-directory "~/Projects/pil21/doc"))
 
 ;; (use-package ggtags
 ;;   :straight t
@@ -185,20 +193,6 @@
   :config (editorconfig-mode)
   :delight)
 
-;; (use-package flycheck
-;;   :straight t
-;;   :bind (:map flycheck-mode-map
-;;               ("M-n" . flycheck-next-error)
-;;               ("M-p" . flycheck-previous-error))
-;;   :config
-;;   (global-flycheck-mode)
-;;   (flycheck-define-checker sh-shellcheck
-;;     "A shell script syntax and style checker using Shellcheck.
-;; See URL `https://github.com/koalaman/shellcheck/'."
-;;   :command ("shellcheck" "-f" "checkstyle" "-s" (eval (symbol-name sh-shell)) source)
-;;   :modes sh-mode
-;;   :error-parser flycheck-parse-checkstyle))
-
 ;; (use-package yasnippet
 ;;   :straight t
 ;;   :commands (yas-minor-mode-on)
@@ -208,10 +202,10 @@
 ;;          (c-mode . yas-minor-mode-on)
 ;;          (c++-mode . yas-minor-mode-on)))
 
-(use-package highlight-symbol
-  :straight t
-  :hook ((emacs-lisp-mode . highlight-symbol-mode)
-         (lisp-mode . highlight-symbol-mode)))
+;; (use-package highlight-symbol
+;;   :straight t
+;;   :hook ((emacs-lisp-mode . highlight-symbol-mode)
+;;          (lisp-mode . highlight-symbol-mode)))
 
 ;; ;; (use-package restclient
 ;; ;;   :straight t
