@@ -1,0 +1,3 @@
+[submodule "elisp/plisp-mode"]
+	path = elisp/plisp-mode
+	url = https://github.com/lispnik/plisp-mode
