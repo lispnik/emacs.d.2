@@ -141,14 +141,6 @@
 
 (use-package platformio-mode :straight t)
 
-(use-package plisp-mode
-  :straight t
-  :mode ("\\.l\\'" . plisp-mode)
-  :custom
-  (plisp-disable-slime-p t)
-  (plisp-)
-  (plisp-documentation-directory "~/Projects/pil21/doc"))
-
 ;; (use-package ggtags
 ;;   :straight t
 ;;   :hook ((c-mode . ggtags-mode)
@@ -272,34 +264,6 @@
 ;; ;;   (setq eshell-smart-space-goes-to-end t))
 
 ;; (use-package eshell)
-
-;; (custom-set-variables
-;;  ;; custom-set-variables was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(menu-bar-mode nil)
-;;  '(safe-local-variable-values
-;;    '((Package . BORDEAUX-THREADS)
-;;      (Syntax . ANSI-Common-lisp)
-;;      (Package . POSTMODERN)
-;;      (Package . S-SQL)
-;;      (Syntax . ANSI-Common-Lisp)
-;;      (Package . CL-POSTGRES)
-;;      (Base . 10)
-;;      (Syntax . Ansi-Common-Lisp)
-;;      (checkdoc-minor-mode . t)
-;;      (indent-tabs)
-;;      (nasm-basic-offset . 2)
-;;      (nasm-basic-offset . 4)
-;;      (project-vc-merge-submodules)))
-;;  '(tool-bar-mode nil)
-;;  '(warning-suppress-log-types '((comp)))
-;;  '(tool-bar-mode nil))
-
-;; (defun turn-off-indent-tabs-mode ()
-;;   (setq indent-tabs-mode nil))
-
 
 (load "~/.emacs.d/init-org.el")
 
