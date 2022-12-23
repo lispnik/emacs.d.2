@@ -231,6 +231,15 @@
   :hook ((c-mode c++-mode objc-mode cuda-mode) .
          (lambda () (require 'ccls) (lsp))))
 
+;; (use-package dap-mode
+;;   :straight t
+;;   :config
+;;   (dap-auto-configure-mode 1)
+;;   (use-package dap-lldb
+;;     :custom ((dap-lldb-debug-program "/usr/local/Cellar/llvm/15.0.6/bin/lldb-vscode"))))
+
+;; (add-to-list 'load-path "~/.emacs.d/elisp/plisp-mode")
+
 ;; ;; (use-package plantuml-mode
 ;; ;;   :straight t
 ;; ;;   :config
