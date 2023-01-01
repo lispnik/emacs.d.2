@@ -54,7 +54,6 @@
   :config
   (global-flycheck-mode))
 
-
 ;; (use-package vterm
 ;;   :custom (vterm-always-compile-module t)
 ;;   :straight t)
@@ -80,6 +79,7 @@
 
 (use-package diff-hl
   :straight t
+  :custom ((diff-hl-draw-borders nil))
   :config
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode))
