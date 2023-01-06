@@ -36,30 +36,7 @@
            (inhibit-startup-echo-area-message (user-login-name))
            (tool-bar-style 'image)))
 
-(use-package modus-themes
-  :straight t
-  :init
-  (modus-themes-load-themes)
-  :config (modus-themes-load-operandi)
-  :custom ((modus-themes-italic-constructs nil)
-           (modus-themes-slanted-constructs nil)
-           (modus-themes-bold-constructs nil))
-  :bind (("<f5>" . modus-themes-toggle)))
-
-(use-package flycheck
-  :straight t
-  :bind (:map flycheck-mode-map
-              ("M-n" . flycheck-next-error)
-              ("M-p" . flycheck-previous-error))
-  :config
-  (global-flycheck-mode))
-
-;; (use-package vterm
-;;   :custom (vterm-always-compile-module t)
-;;   :straight t)
-
 (use-package emacs-mode
-  ;; :hook ((emacs-lisp-mode . turn-off-indent-tabs-mode))
   :bind ("C-c C-c" . eval-defun))
 
 (use-package dired
@@ -69,13 +46,75 @@
     :bind (:map dired-mode-map ("M-o" . dired-omit-mode))
     :hook (dired-mode . (lambda () (dired-omit-mode 1)))
     :init (when (eq system-type 'windows-nt)
-            (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*")))
-  (use-package dired-atool
-    :if (memq system-type '(gnu/linux darwin))
-    :straight t
-    :bind (:map dired-mode-map
-                ("z" . dired-atool-do-unpack)
-                ("Z" . dired-atool-do-pack))))
+            (setq dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^ntuser.*\\|NTUSER.*"))))
+
+(use-package dired-atool
+  :after (dired)
+  :if (memq system-type '(gnu/linux darwin))
+  :straight t
+  :bind (:map dired-mode-map
+              ("z" . dired-atool-do-unpack)
+              ("Z" . dired-atool-do-pack)))
+
+(use-package ediff
+  :init (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+
+(use-package projectile
+  :straight t
+  :bind (:map projectile-mode-map
+              ("C-c p" . projectile-command-map))
+  :config (projectile-mode))
+
+(use-package which-key
+  :straight t
+  :config (which-key-mode)
+  :delight)
+
+(use-package anzu
+  :straight t
+  :config (global-anzu-mode 1)
+  :bind (([remap query-replace] . anzu-query-replace)
+         ([remap query-replace-regexp] . anzu-query-replace-regexp))
+  :delight)
+
+(use-package editorconfig
+  :straight t
+  :config (editorconfig-mode)
+  :delight)
+
+(use-package exec-path-from-shell
+  :straight t
+  :if (or (memq window-system '(mac ns))
+          (memq system-type '(gnu/linux)))
+  :ensure t
+  :config (exec-path-from-shell-initialize))
+
+(use-package lsp-mode
+  :straight t
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix  "C-c l")
+  :config
+  (setq lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :straight t
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-doc-enable t))
+
+(use-package ccls
+  :straight t
+  :after (lsp-mode)
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda () (require 'ccls) (lsp))))
+
+;; (use-package dap-mode
+;;   :straight t
+;;   :config
+;;   (dap-auto-configure-mode 1)
+;;   (use-package dap-lldb
+;;     :custom ((dap-lldb-debug-program "/usr/local/Cellar/llvm/15.0.6/bin/lldb-vscode"))))
 
 (use-package diff-hl
   :straight t
@@ -92,98 +131,123 @@
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
-(use-package company
-  :straight t
-  :bind ( ;; ("TAB" . company-indent-or-complete-common)
-         :map company-active-map
-         ("M-/" . company-complete)
-         ("TAB" . company-complete-common-or-cycle)
-         ("<backtab>" . (lambda () (interactive) (company-complete-common-or-cycle))))
-  ;; :hook (emacs-lisp-mode . company-mode)
-  :init (setq company-tooltip-align-annotations t)
-  :config (global-company-mode)
-  (use-package company-quickhelp
-    :straight t
-    :hook (company-mode . company-quickhelp-mode)))
 
-(use-package sly
-  :straight t
-  :init
-  (setq sly-ignore-protocol-mismatches t
-        sly-auto-start 'always
-        sly-mrepl-pop-sylvester nil)
-  (cond
-   ((eq system-type 'windows-nt)
-    ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
-    ;; start from Sly
-    (setq sly-lisp-implementations
-          '((ccl ("cmd" "/c" "wx86cl64"))
-            (sbcl ("cmd" "/c" "sbcl.exe" "--dynamic-space-size" "2048")))))
-   ((eq system-type 'gnu/linux)
-    (setq sly-lisp-implementations
-          '((ccl ("lx86cl64"))
-            (sbcl ("sbcl" "--dynamic-space-size" "2048"))
-            (ecl ("ecl")))))
-   ((eq system-type 'darwin)
-    (setq sly-lisp-implementations
-          `((ccl ("/usr/local/bin/ccl64"))
-            (sbcl ("sbcl" "--dynamic-space-size" "2048"))
-            (abcl ,(let ((java-home (with-temp-buffer
-                                      (call-process "/usr/libexec/java_home" nil t nil "-F" "-v" "17")
-                                      (s-chomp (buffer-string)))))
-                     (list (format "%s/bin/java" java-home) "-jar" (expand-file-name "~/.local/abcl-bin-1.9.0/abcl.jar"))))
-            (ecl ("ecl"))))))
-  :hook ((sly-mode . show-paren-mode)
-         (sly-mrepl-mode . show-paren-mode))
-;;;  :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common))
-  :config (setq inferior-lisp-program "sbcl"
-                sly-default-lisp 'sbcl))
+;; (use-package modus-themes
+;;   :straight t
+;;   :init
+;;   (modus-themes-load-themes)
+;;   :config (modus-themes-load-operandi)
+;;   :custom ((modus-themes-italic-constructs nil)
+;;            (modus-themes-slanted-constructs nil)
+;;            (modus-themes-bold-constructs nil))
+;;   :bind (("<f5>" . modus-themes-toggle)))
 
-(use-package platformio-mode :straight t)
+(use-package flycheck
+  :straight t
+  :bind (:map flycheck-mode-map
+              ("M-n" . flycheck-next-error)
+              ("M-p" . flycheck-previous-error))
+  :config
+  (global-flycheck-mode))
+
+;; (use-package vterm
+;;   :custom (vterm-always-compile-module t)
+;;   :straight t)
+
+;; (use-package company
+;;   :straight t
+;;   :bind ( ;; ("TAB" . company-indent-or-complete-common)
+;;          :map company-active-map
+;;          ("M-/" . company-complete)
+;;          ("TAB" . company-complete-common-or-cycle)
+;;          ("<backtab>" . (lambda () (interactive) (company-complete-common-or-cycle))))
+;;   ;; :hook (emacs-lisp-mode . company-mode)
+;;   :init (setq company-tooltip-align-annotations t)
+;;   :config (global-company-mode)
+;;   (use-package company-quickhelp
+;;     :straight t
+;;     :hook (company-mode . company-quickhelp-mode)))
+
+;; (use-package sly
+;;   :straight t
+;;   :init
+;;   (setq sly-ignore-protocol-mismatches t
+;;         sly-auto-start 'always
+;;         sly-mrepl-pop-sylvester nil)
+;;   (cond
+;;    ((eq system-type 'windows-nt)
+;;     ;; Prefixing with "cmd" allows SDL2, IUP and other graphical applications to
+;;     ;; start from Sly
+;;     (setq sly-lisp-implementations
+;;           '((ccl ("cmd" "/c" "wx86cl64"))
+;;             (sbcl ("cmd" "/c" "sbcl.exe" "--dynamic-space-size" "2048")))))
+;;    ((eq system-type 'gnu/linux)
+;;     (setq sly-lisp-implementations
+;;           '((ccl ("lx86cl64"))
+;;             (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+;;             (ecl ("ecl")))))
+;;    ((eq system-type 'darwin)
+;;     (setq sly-lisp-implementations
+;;           `((ccl ("/usr/local/bin/ccl64"))
+;;             (sbcl ("sbcl" "--dynamic-space-size" "2048"))
+;;             (abcl ,(let ((java-home (with-temp-buffer
+;;                                       (call-process "/usr/libexec/java_home" nil t nil "-F" "-v" "17")
+;;                                       (s-chomp (buffer-string)))))
+;;                      (list (format "%s/bin/java" java-home) "-jar" (expand-file-name "~/.local/abcl-bin-1.9.0/abcl.jar"))))
+;;             (ecl ("ecl"))))))
+;;   :hook ((sly-mode . show-paren-mode)
+;;          (sly-mrepl-mode . show-paren-mode))
+;; ;;;  :bind (:map sly-mode-map ("TAB" . company-indent-or-complete-common))
+;;   :config (setq inferior-lisp-program "sbcl"
+;;                 sly-default-lisp 'sbcl))
+
+;; (abcl ,(let ((java-home (with-temp-buffer
+;;                           (call-process "/usr/libexec/java_home" nil t nil "-F" "-v" "17")
+;;                           (s-chomp (buffer-string)))))
+;;          (list (format "%s/bin/java" java-home)
+;;                "-jar"
+;;                (expand-file-name "~/.local/abcl-bin-1.9.0/abcl.jar"))))
+
+;; (use-package slime
+;;   :straight t
+;;   :config
+;;   (setq slime-complete-symbol 'slime-fuzzy-complete-symbol
+;;         slime-net-coding-config 'utf-8-unix
+;;         slime-lisp-implementations `((sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2048"))
+;;                                      (abcl ("/usr/local/bin/abcl"))
+;;                                      (ecl ("/usr/local/bin/ecl"))))
+;;   (slime-setup '(slime-fancy)))
+
+;; (use-package slime-company
+;;   :straight t
+;;   :after (slime company)
+;;   :config (setq slime-company-completion 'fuzzy
+;;                 slime-company-after-completion 'slime-company-just-one-space)
+;;   (slime-setup '(slime-company))
+;;   (define-key company-active-map (kbd "\C-n") 'company-select-next)
+;;   (define-key company-active-map (kbd "\C-p") 'company-select-previous)
+;;   (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
+;;   (define-key company-active-map (kbd "M-.") 'company-show-location))
+
+;; (use-package platformio-mode :straight t)
 
 ;; (use-package ggtags
 ;;   :straight t
 ;;   :hook ((c-mode . ggtags-mode)
 ;;          (c++-mode . ggtags-mode)))
 
-(use-package ediff
-  :init (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-
-(use-package projectile
-  :straight t
-  :bind (:map projectile-mode-map
-              ("C-c p" . projectile-command-map))
-  :config (projectile-mode))
-
-(use-package which-key
-  :straight t
-  :config (which-key-mode)
-  :delight)
-
-(use-package paredit
-  :straight t
-  :hook
-  ((emacs-lisp-mode . enable-paredit-mode)
-   (lisp-mode . enable-paredit-mode)
-   (sly-mrepl-mode . enable-paredit-mode))
-  ;;  (sly-mrepl-mode . (lambda ()
-  ;;                           (define-key sly-mrepl-mode-map
-  ;;                             (read-kbd-macro paredit-backward-delete-key) nil))))
-  :bind ((:map lisp-mode-map
-               ("M-<left>"  . paredit-backward-slurp-sexp)
-               ("M-<right>" . paredit-forward-slurp-sexp))))
-
-(use-package anzu
-  :straight t
-  :config (global-anzu-mode 1)
-  :bind (([remap query-replace] . anzu-query-replace)
-         ([remap query-replace-regexp] . anzu-query-replace-regexp))
-  :delight)
-
-(use-package editorconfig
-  :straight t
-  :config (editorconfig-mode)
-  :delight)
+;; (use-package paredit
+;;   :straight t
+;;   :hook
+;;   ((emacs-lisp-mode . enable-paredit-mode)
+;;    (lisp-mode . enable-paredit-mode)
+;;    (sly-mrepl-mode . enable-paredit-mode))
+;;   ;;  (sly-mrepl-mode . (lambda ()
+;;   ;;                           (define-key sly-mrepl-mode-map
+;;   ;;                             (read-kbd-macro paredit-backward-delete-key) nil))))
+;;   :bind ((:map lisp-mode-map
+;;                ("M-<left>"  . paredit-backward-slurp-sexp)
+;;                ("M-<right>" . paredit-forward-slurp-sexp))))
 
 ;; (use-package yasnippet
 ;;   :straight t
@@ -204,39 +268,6 @@
 ;; ;;   :config
 ;; ;;   (use-package company-restclient :straight t)
 ;; ;;   (use-package restclient-test :straight t))
-
-(use-package exec-path-from-shell
-  :straight t
-  :if (or (memq window-system '(mac ns))
-          (memq system-type '(gnu/linux)))
-  :ensure t
-  :config (exec-path-from-shell-initialize))
-
-(use-package lsp-mode
-  :straight t
-  :commands (lsp lsp-deferred)
-  :init (setq lsp-keymap-prefix  "C-c l")
-  :config  (setq lsp-enable-which-key-integration t)
-  ;; :hook ((go-mode) . lisp)
-)
-
-(use-package lsp-ui
-  :straight t
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-doc-enable t))
-
-(use-package ccls
-  :straight t
-  :hook ((c-mode c++-mode objc-mode cuda-mode) .
-         (lambda () (require 'ccls) (lsp))))
-
-;; (use-package dap-mode
-;;   :straight t
-;;   :config
-;;   (dap-auto-configure-mode 1)
-;;   (use-package dap-lldb
-;;     :custom ((dap-lldb-debug-program "/usr/local/Cellar/llvm/15.0.6/bin/lldb-vscode"))))
 
 ;; (add-to-list 'load-path "~/.emacs.d/elisp/plisp-mode")
 
